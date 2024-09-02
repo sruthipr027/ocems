@@ -5,7 +5,6 @@ import 'react-toastify/dist/ReactToastify.css';  // Toastify styles
 import { useNavigate } from 'react-router-dom';
 import Maindashboard from '../Maindashboard/Maindashboard';
 import DashboardSam from '../Dashboard/DashboardSam';
-import EditUsers from './EditUsers';
 
 
 function ManageUser() {

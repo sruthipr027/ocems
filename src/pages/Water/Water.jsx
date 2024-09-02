@@ -3,7 +3,6 @@ import Maindashboard from '../Maindashboard/Maindashboard';
 import './water.css';
 import waterDrop from '../../assests/images/water.png';
 import DashboardSam from '../Dashboard/DashboardSam';
-import CalibrationPopup from '../Calibration/CalibrationPopup';
 import WaterGraphPopup from './WaterGraphPopup';
 
 function Water() {
@@ -108,12 +107,7 @@ function Water() {
                   )}
 
                   {/* Calibration Popup */}
-                  {showCalibrationPopup && (
-                    <CalibrationPopup
-                      userName='name'
-                      onClose={handleCloseCalibrationPopup}
-                    />
-                  )}
+                  
                 </div>
               </div>
             </div>

@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import './userlog.css';
 import DashboardSam from "../Dashboard/DashboardSam";
 import Maindashboard from "../Maindashboard/Maindashboard";
-import EditUsers from "./EditUsers";
 
 const UsersLog = () => {
 

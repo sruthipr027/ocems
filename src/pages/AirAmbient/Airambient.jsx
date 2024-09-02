@@ -3,7 +3,6 @@ import Maindashboard from '../Maindashboard/Maindashboard'
 import waterDrop from '../../assests/images/windimage.png'
 import DashboardSam from '../Dashboard/DashboardSam';
 import AirGraphPopup from './AirGraphPopup';
-import CalibrationPopup from '../Calibration/CalibrationPopup';
 
 
 
@@ -102,12 +101,12 @@ function  Airambient()  {
                   )}
 
                   {/* Calibration Popup */}
-                  {showCalibrationPopup && (
+                 {/*  {showCalibrationPopup && (
                     <CalibrationPopup
                       userName='name'
                       onClose={handleCloseCalibrationPopup}
                     />
-                  )}
+                  )} */}
         </div>
         </div>
             </div>

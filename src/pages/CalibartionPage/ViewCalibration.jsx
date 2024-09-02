@@ -1,7 +1,6 @@
 import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';  // Toastify styles
 import { useNavigate } from 'react-router-dom';
-import FooterM from '../FooterMain/FooterM';
 import Maindashboard from '../Maindashboard/Maindashboard';
 import DashboardSam from '../Dashboard/DashboardSam';
 import './viewcalibration.css'

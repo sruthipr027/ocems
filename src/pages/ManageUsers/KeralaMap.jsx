@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchLatestIotData } from "../../redux/features/iotData/iotDataSlice";
+import React, { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 const KeralaMap = ({ users }) => {
-  const dispatch = useDispatch();
-  const latestIotData = useSelector((state) => state.iotData.latestData);
   const [selectedUser, setSelectedUser] = useState(null);
 
   const defaultPosition = [10.8505, 76.2711]; // Center position of Kerala
@@ -30,28 +26,29 @@ const KeralaMap = ({ users }) => {
     shadowSize: [41, 41],
   });
 
-  const handleMarkerClick = (user) => {
-    setSelectedUser(user.userName);
-    dispatch(fetchLatestIotData(user.userName));
+  // Sample data to simulate IoT data
+  const sampleIotData = {
+    "pH": 7.1,
+    "TDS": 300,
+    "BOD": 5,
+    "COD": 50,
+    "Chloride": 20,
+    "Analyzer Health": "Good"
   };
 
   // Fields to be excluded from the display
   const excludedFields = [
     "_id",
-    "product_id",
     "userName",
     "companyName",
-    "industryType",
-    "mobileNumber",
-    "email",
-    "time",
-    "date",
-    "topic",
-    "validationStatus",
-    "validationMessage",
-    "timestamp",
-    "__v"
+    "modelName",
+    "latitude",
+    "longitude"
   ];
+
+  const handleMarkerClick = (user) => {
+    setSelectedUser(user.userName);
+  };
 
   return (
     <MapContainer center={defaultPosition} zoom={7} style={{ height: "500px", width: "100%" }}>
@@ -62,9 +59,8 @@ const KeralaMap = ({ users }) => {
       {users
         .filter(user => user.userType === "user")  // Only show users with userType "user"
         .map((user) => {
-          const userIoT = selectedUser === user.userName ? latestIotData : null;
-          const isHealthy = userIoT && userIoT.validationStatus === "Valid";
-          const analyzerHealth = userIoT && userIoT.validationMessage ? userIoT.validationMessage : isHealthy ? "Good" : "Problem";
+          const userIoT = selectedUser === user.userName ? sampleIotData : null;
+          const isHealthy = userIoT && userIoT["Analyzer Health"] === "Good";
 
           return (
             <Marker
@@ -80,7 +76,6 @@ const KeralaMap = ({ users }) => {
                   <h5>User ID: {user.userName}</h5>
                   <p>Company Name: <strong>{user.companyName}</strong></p>
                   <p>Model Name: <strong>{user.modelName}</strong></p>
-                  <p>Analyzer Health: <strong>{analyzerHealth}</strong></p>
                   {userIoT && (
                     <div style={styles.scrollContainer}>
                       <div style={styles.cardContainer}>
