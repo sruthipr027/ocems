@@ -1,0 +1,18 @@
+.flight-schedule-card {
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white; /* Ensures a clean background */
+}
+
+.flight-schedule-header {
+    font-weight: bold;
+    font-size: 14px;
+    text-align: left;
+    color: #4E5D6C; /* Match the header text color with your reference */
+    margin-bottom: 10px;
+}
+
+.flight-schedule-chart {
+    height: 200px; /* Controls the height of the chart */
+}

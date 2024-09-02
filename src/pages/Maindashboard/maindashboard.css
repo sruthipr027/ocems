@@ -1,0 +1,73 @@
+/* General Styles */
+.navbg {
+  background: linear-gradient(90deg, #3c798b, #bde3ee);
+}
+
+.buttonbg {
+  background: linear-gradient(90deg, #3c798b, #bde3ee);
+  border: none;
+  width: 200px;
+}
+
+/* Main Dashboard Layout */
+.maindashboard-container {
+  display: flex;
+  overflow-x: hidden;
+}
+
+.sidebar {
+  width: 275px;
+}
+
+.content {
+  flex-grow: 1;
+}
+
+/* Button Group for Laptop View */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Adjust gap between buttons */
+  margin-top: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 767px) {
+  .sidebar {
+    display: none;
+  }
+
+  .content {
+    margin-left: 0;
+    padding: 0 15px;
+  }
+
+  .navbg {
+    border-radius: 0;
+  }
+
+  /* Button Container for 2x2 Grid Layout */
+  .button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .button-container .buttonbg {
+    width: calc(50% - 10px); /* 50% width minus margin */
+    margin-bottom: 10px; /* Margin between rows */
+  }
+}
+/* Prevent the dropdown from scrolling */
+/* Ensure the dropdown menu doesn't scroll and fits within the viewport */
+/* Remove all height and overflow constraints */
+.no-scroll-dropdown {
+  max-height: none !important; /* Remove max-height restrictions */
+  overflow-y: visible !important; /* Ensure all items are visible */
+}
+
+.dropdown-menu {
+  max-height: none; /* Prevent scrolling by removing height restrictions */
+  overflow-y: visible; /* Ensure all items are visible */
+}
+
