@@ -21,7 +21,7 @@ function Hedaer() {
 
 
   return (
-    <div>
+    <div className='ms-0'>
       <div className='mt-4 col-lg-12'>
         <Navbar expand="lg" className="mb-4 header-navbar">
           <Container fluid className='d-flex align-items-center justify-content-between'>
