@@ -27,21 +27,23 @@ function Maindashboard() {
   const handleParameter = () => {
     navigate('/view-parameter');
   };
+  
 
   return (
     <div className='maindashboard-container d-flex'>
       <div className='flex-grow-1 content'>
         <Hedaer />
-        
-        <div style={{ position: 'relative', marginBottom: '1rem' }}>
+        <div style={{ position: 'relative', marginBottom: '1rem' }} className='w-100 px-1 homeSearch1'>
           <input 
             type="text" 
             placeholder="Search..." 
-            className="w-100 p-3 mb-4 shadow" 
+            className="p-3 mb-4 shadow" 
             style={{ 
               borderRadius: '10px', 
               border: 'none', 
-              paddingRight: '40px' 
+              // paddingRight: '40px' ,
+              // marginInline:'10px',
+              width:'100%'
             }} 
           />
           <i 
@@ -57,10 +59,10 @@ function Maindashboard() {
         </div>
         
         <div className='me-1'>
-          <Navbar expand="lg" className="navbg p-3 shadow" style={{ borderRadius: '10px' }}>
-            <Container>
+          <Navbar expand="lg" className="navbg p-3 shadow" style={{ borderRadius: '10px'}}>
+            <div className='d-flex justify-content-between gap-2 w-100'>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
-              <Navbar.Collapse id="basic-navbar-nav">
+              <Navbar.Collapse id="basic-navbar-nav" >
                 <Nav className="w-100 justify-content-evenly">
                   <Nav.Link href="/water">Water</Nav.Link>
                   <Nav.Link href="/ambient">Ambient Air</Nav.Link>
@@ -83,12 +85,38 @@ function Maindashboard() {
 
                 </Nav>
               </Navbar.Collapse>
-            </Container>
+              <div className='homeSearch2'>
+                <div style={{ position: 'relative' }} className='w-70 px-1 d-flex justify-content-center align-items-center'>
+                <input 
+                  type="text" 
+                  placeholder="Search..." 
+                  className="p-3 shadow" 
+                  style={{ 
+                    borderRadius: '10px', 
+                    border: 'none', 
+                    // paddingRight: '40px' ,
+                    // marginInline:'10px',
+                    width:'100%'
+                  }} 
+                />
+                <i 
+                  className="fa fa-search" 
+                  style={{ 
+                    position: 'absolute', 
+                    top: '48%', 
+                    right: '30px', 
+                    transform: 'translateY(-50%)', 
+                    color: '#aaa' 
+                  }} 
+                ></i>
+              </div>
+              </div>
+            </div>
           </Navbar>
           
-          <div className='d-flex flex-column flex-md-row justify-content-center align-items-center mt-3'>
-            <div className='d-flex  flex-md-row justify-content-evenly align-items-center '>
-              <Dropdown className='m-2 buttonbg'>
+          <div className='flex-md-row  mt-3 button-section'>
+            <div className='d-flex  flex-md-row justify-content-around align-items-center '>
+              <Dropdown className='m-2 buttonbg rounded'>
                 <Dropdown.Toggle className="btn buttonbg shadow" style={{ background: '#236a80', border: 'none' }}>
                   Calibration
                 </Dropdown.Toggle>
@@ -109,7 +137,7 @@ function Maindashboard() {
               </Dropdown>
             </div>
 
-            <div className='d-flex  flex-md-row '>
+            <div className='d-flex flex-md-row ' style={{backgroundColor : 'transparent'}}>
               <Button className="btn buttonbg shadow m-2 p-0" onClick={handleDownload} style={{ background: '#236a80', border: 'none' }}>
                 Download
               </Button>

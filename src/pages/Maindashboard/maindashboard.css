@@ -2,11 +2,63 @@
 .navbg {
   background: linear-gradient(90deg, #3c798b, #bde3ee);
 }
-
+.homeSearch2{
+  display: none;
+}
+.homeSearch1{
+  display: block;
+}
+@media only screen and (max-width: 1000px) {
+  .homeSearch1{
+    display: none;
+  }
+}
+@media only screen and (max-width: 1000px) {
+  .homeSearch2{
+    display: block;
+  }
+}
+.button-section{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+@media (max-width: 1000px){
+  .button-section{
+    justify-content: space-around;
+  }
+}
 .buttonbg {
   background: linear-gradient(90deg, #3c798b, #bde3ee);
   border: none;
-  width: 200px;
+  width: 260px;
+
+}
+@media (max-width: 1500px){
+  .buttonbg{
+    width: 230px;
+  }
+}
+@media (max-width: 1200px){
+  .buttonbg{
+    width: 200px;
+  }
+}
+@media (max-width: 1000px){
+  .buttonbg{
+    width: 220px;
+  }
+}
+@media (max-width: 450px){
+  .buttonbg{
+    width: 180px;
+  }
+}
+@media (max-width: 400px){
+  .buttonbg{
+    width: 160px;
+  }
 }
 
 /* Main Dashboard Layout */

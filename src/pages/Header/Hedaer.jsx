@@ -22,32 +22,34 @@ function Hedaer() {
     <div className='ms-0'>
       <div className='mt-4 col-lg-12'>
         <Navbar expand="lg" className="mb-4 header-navbar">
-          <Container fluid className='d-flex align-items-center justify-content-between'>
+          <div  className='w-100 px-2 d-flex align-items-center justify-content-between'>
             {/* Left aligned brand */}
             <Navbar.Brand href="#home" className="brand-text">
               <span className="d-none d-lg-inline">User ID : </span>
               <span className='text-dark'><b>Admin Developer</b></span>
             </Navbar.Brand>
             
-            {/* Icons pushed to the right */}
-            <div className="d-flex align-items-center icons">
-              <Nav.Link className='me-3' href="#home">
-                <i className="fa-regular fa-bell fa-1x"></i>
-              </Nav.Link>
-              <Dropdown className="me-3">
-                <Dropdown.Toggle as={Nav.Link} bsPrefix="p-0" id="user-dropdown">
-                  <i className="fa-solid fa-user"></i>
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu align="end">
-                  <Dropdown.Item href="#signout" onClick={handleSignOut}>Sign Out</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+            <div className='d-flex'>
+              {/* Icons pushed to the right */}
+              <div className="d-flex align-items-center icons">
+                <Nav.Link className='me-3' href="#home">
+                  <i className="fa-regular fa-bell fa-1x"></i>
+                </Nav.Link>
+                <Dropdown className="me-3">
+                  <Dropdown.Toggle as={Nav.Link} bsPrefix="p-0" id="user-dropdown">
+                    <i className="fa-solid fa-user"></i>
+                  </Dropdown.Toggle>
+  
+                  <Dropdown.Menu align="end">
+                    <Dropdown.Item href="#signout" onClick={handleSignOut}>Sign Out</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </div>
+  
+              {/* Hamburger menu */}
+              <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={handleShow} />
             </div>
-
-            {/* Hamburger menu */}
-            <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={handleShow} />
-          </Container>
+          </div>
         </Navbar>
 
         {/* Offcanvas for DashboardSam */}

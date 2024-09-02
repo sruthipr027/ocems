@@ -6,7 +6,6 @@
   padding-left: 0; /* Remove left padding */
   padding-right: 0; /* Remove right padding */
 }
-
 .full-screen-offcanvas .offcanvas-body {
   padding: 0; /* Remove padding to make use of full screen */
 }
@@ -22,6 +21,12 @@
 /* Header styles */
 .header-navbar {
   background-color: rgb(221, 240, 243);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 .brand-text {
@@ -34,7 +39,7 @@
     margin-left: 0;
     margin-right: 0;
     padding-left: 0;
-    padding-right: 60px;
+    /* padding-right: 60px; */
   }
   @media (min-width: 769px) {
     .header-navbar .icons{
