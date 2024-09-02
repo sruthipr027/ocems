@@ -8,17 +8,15 @@ import './header.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useNavigate } from 'react-router-dom';
 
-
 function Hedaer() {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const navigate = useNavigate();
-  const handleSignOut =()=>{
-    navigate('/')
-  }
-
+  const handleSignOut = () => {
+    navigate('/');
+  };
 
   return (
     <div className='ms-0'>
@@ -32,19 +30,19 @@ function Hedaer() {
             </Navbar.Brand>
             
             {/* Icons pushed to the right */}
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center icons">
               <Nav.Link className='me-3' href="#home">
                 <i className="fa-regular fa-bell fa-1x"></i>
               </Nav.Link>
               <Dropdown className="me-3">
-  <Dropdown.Toggle as={Nav.Link} bsPrefix="p-0" id="user-dropdown">
-    <i className="fa-solid fa-user"></i>
-  </Dropdown.Toggle>
+                <Dropdown.Toggle as={Nav.Link} bsPrefix="p-0" id="user-dropdown">
+                  <i className="fa-solid fa-user"></i>
+                </Dropdown.Toggle>
 
-  <Dropdown.Menu align="end">
-    <Dropdown.Item href="#signout" onClick={handleSignOut}>Sign Out</Dropdown.Item>
-  </Dropdown.Menu>
-</Dropdown>
+                <Dropdown.Menu align="end">
+                  <Dropdown.Item href="#signout" onClick={handleSignOut}>Sign Out</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
 
             {/* Hamburger menu */}

@@ -10,7 +10,6 @@ import AirGraphPopup from './AirGraphPopup';
 function  Airambient()  {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-  const [showCalibrationPopup, setShowCalibrationPopup] = useState(false);
  
   const airParameters = [
     { parameter: "Flow", value: 'm/s', name: "Flow" },
@@ -41,13 +40,7 @@ function  Airambient()  {
     setSelectedCard(null);
   };
 
-  const handleOpenCalibrationPopup = () => {
-    setShowCalibrationPopup(true);
-  };
-
-  const handleCloseCalibrationPopup = () => {
-    setShowCalibrationPopup(false);
-  };
+  
 
   return (
     <div className="container-fluid">
