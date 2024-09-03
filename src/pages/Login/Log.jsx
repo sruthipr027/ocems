@@ -92,7 +92,7 @@ function Log() {
     }
   }; */
   const handleLogin =()=>{
-    navigate('/manage-user')
+    navigate('/water')
   }
   const handleDownloadClick = () => {
     navigate('/download-data');  // Redirect to the download-data page

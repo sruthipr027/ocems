@@ -38,7 +38,7 @@ function Notification() {
                     <h1 className='text-center mt-5' style={{justifyContent:'center'}}>Notification Added By</h1>
                     
                 </div>
-                <div className="card m-5">
+                <div className="card m-1">
                     <div className="card-body">
                         <form className='m-5'>
                             <div className="row">
@@ -89,7 +89,7 @@ function Notification() {
                     <h1 className='text-center mt-2' style={{justifyContent:'center'}}>Add Notification Details</h1>
                     
                 </div>
-                <div className="card m-5">
+                <div className="card m-1">
                     <div className="card-body">
                         <form className='m-5'>
                             <div className="row">
