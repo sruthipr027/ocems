@@ -1,9 +1,9 @@
 import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';  // Toastify styles
 import { useNavigate } from 'react-router-dom';
-import Maindashboard from '../Maindashboard/Maindashboard';
 import DashboardSam from '../Dashboard/DashboardSam';
 import './viewcalibration.css'
+import Hedaer from '../Header/Hedaer';
 
 function ViewCalibration() {
     const navigate = useNavigate();
@@ -37,7 +37,7 @@ function ViewCalibration() {
         <div className="col-lg-9 col-12 ">
             <div className="row">
                 <div className="col-12">
-                    <Maindashboard />
+                    <Hedaer />
                 </div>
             </div>
             <div>

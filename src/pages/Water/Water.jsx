@@ -4,7 +4,6 @@ import './water.css';
 import waterDrop from '../../assests/images/water.png';
 import DashboardSam from '../Dashboard/DashboardSam';
 import WaterGraphPopup from './WaterGraphPopup';
-import Hedaer from '../Header/Hedaer';
 
 function Water() {
   const [showPopup, setShowPopup] = useState(false);
@@ -53,7 +52,7 @@ function Water() {
         </div>
         <div className="col-lg-9 col-12">
           <div>
-            <Hedaer/>
+            <Maindashboard/>
           </div>
           {/* <div className="row">
             <div className="col-12">

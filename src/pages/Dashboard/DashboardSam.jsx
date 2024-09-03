@@ -7,7 +7,7 @@ function DashboardSam() {
             <ul className='menu'>
                 <h1 className='fontstyle text-center' style={{fontSize: '46px',lineHeight: '62px', color:'#ffffff'}}>EBHOOM </h1>
                 <li className='list active text-center '>
-                    <a href="/manage-user"  style={{textDecoration:'none' ,color:'#ffffff'}}>
+                    <a href="/water"  style={{textDecoration:'none' ,color:'#ffffff'}}>
                         <span className='title'>Dashboard</span>
                     </a>
                 </li>

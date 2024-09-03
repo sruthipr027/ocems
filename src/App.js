@@ -4,7 +4,6 @@ import Log from './pages/Login/Log';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Reset from './pages/Resetpassword/Reset';
 import ResetEmail from './pages/Resetpassword/ResetEmail';
-import DashboardSam from './pages/Dashboard/DashboardSam';
 import Maindashboard from './pages/Maindashboard/Maindashboard';
 import Quality from './pages/Quality/Quality';
 import Quantity from './pages/Quantity/Quantity';
@@ -40,7 +39,7 @@ function App() {
         <Route path='/users-log' element={<Dashboard/>}></Route>
         <Route path='/reset-password' element={<Reset/>}></Route>
         <Route path='/reset' element={<ResetEmail/>}></Route>
-        <Route path='/dashboard' element={<DashboardSam/>}></Route>
+        <Route path='/dashboard' element={<Dashboard/>}></Route>
         <Route path='/dashboard-dash' element={<Maindashboard/>}></Route>
         <Route path='/quality' element={<Quality/>}></Route>
         <Route path='/quantity' element={<Quantity/>}></Route>

@@ -5,7 +5,7 @@ import KeralaMap from './KeralaMap';
 import { useNavigate } from "react-router-dom";
 import './userlog.css';
 import DashboardSam from "../Dashboard/DashboardSam";
-import Maindashboard from "../Maindashboard/Maindashboard";
+import Hedaer from "../Header/Hedaer";
 
 const UsersLog = () => {
 
@@ -71,7 +71,7 @@ const UsersLog = () => {
         <div className="col-lg-9 col-12">
           <div className="row">
             <div className="col-12">
-              <Maindashboard />
+              <Hedaer />
             </div>
           </div>
           <div className="row mt-4">

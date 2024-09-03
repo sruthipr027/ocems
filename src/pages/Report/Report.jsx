@@ -4,8 +4,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';  // Toastify styles
 import { useNavigate } from 'react-router-dom';
 import FooterM from '../FooterMain/FooterM';
-import Maindashboard from '../Maindashboard/Maindashboard';
 import DashboardSam from '../Dashboard/DashboardSam';
+import Hedaer from '../Header/Hedaer';
 
 function Report() {
     const navigate = useNavigate();
@@ -50,7 +50,7 @@ function Report() {
         <div className="col-lg-9 col-12 ">
             <div className="row">
                 <div className="col-12">
-                    <Maindashboard />
+                    <Hedaer/>
                 </div>
             </div>
             <div>
@@ -61,7 +61,7 @@ function Report() {
                     <h1 className='text-center mt-5' style={{justifyContent:'center'}}>Validate Data</h1>
                     
                 </div>
-                <div className="card m-5">
+                <div className="card m-1">
                     <div className="card-body">
                         <form className='m-5 p-5'>
                             <div className="row">
