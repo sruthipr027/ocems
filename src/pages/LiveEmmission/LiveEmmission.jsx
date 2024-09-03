@@ -1,11 +1,11 @@
 import React, {  useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';  // Toastify styles
-import Maindashboard from '../Maindashboard/Maindashboard';
 import DashboardSam from '../Dashboard/DashboardSam';
 /* import axios from 'axios';
 import { API_URL } from '../../utils/apiConfig'; */
 import MultipleVideo from './MultipleVideo';
 import './live.css'
+import Hedaer from '../Header/Hedaer';
 
 function LiveEmmission() {
     const [videoUrl, setVideoUrl] = useState('');
@@ -34,7 +34,7 @@ function LiveEmmission() {
         <div className="col-lg-9 col-12 ">
             <div className="row">
                 <div className="col-12">
-                    <Maindashboard />
+                    <Hedaer />
                 </div>
             </div>
             <div>
@@ -62,7 +62,7 @@ function LiveEmmission() {
      
         
            
-      <div className="card mt-5">
+      <div className="cardm mt-5">
         <div className="card-body">
           <div className="row mt-5 liverow">
             <div className="col-md-12 ">

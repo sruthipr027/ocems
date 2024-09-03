@@ -1,5 +1,6 @@
 import React from 'react'
 import DashboardSam from '../Dashboard/DashboardSam'
+import Hedaer from '../Header/Hedaer'
 import Maindashboard from '../Maindashboard/Maindashboard'
 
 function Account() {
@@ -14,7 +15,7 @@ function Account() {
         <div className="col-lg-9 col-12 ">
             <div className="row">
                 <div className="col-12">
-                    <Maindashboard />
+                    <Hedaer />
                 </div>
             </div>
             <div>
@@ -25,7 +26,7 @@ function Account() {
                     <h1 className='text-center mt-5' style={{justifyContent:'center'}}> Account</h1>
                     
                 </div>
-                <div className="card m-5">
+                <div className="card m-">
                     <div className="card-body">
                         <form className='m-5'>
                             <div className="row">

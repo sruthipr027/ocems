@@ -1,5 +1,4 @@
 import React from 'react';
-import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Hedaer from '../Header/Hedaer';
@@ -71,17 +70,39 @@ function Maindashboard() {
                   <Nav.Link href="/energy">Energy</Nav.Link>
                   
                   <Dropdown>
-                    <Dropdown.Toggle as={Nav.Link} id="filter-dropdown" bsPrefix="p-0">
-                      <img src={filter} alt="Filter" width="20px" />
-                    </Dropdown.Toggle>
+  <Dropdown.Toggle 
+    as={Nav.Link} 
+    id="filter-dropdown" 
+    bsPrefix="p-0 pt-2"
+  >
+    <img src={filter} alt="Filter" width="25px" style={{ verticalAlign: 'middle', bottom: '30%' }} />
+  </Dropdown.Toggle>
 
-                    <Dropdown.Menu className="no-scroll-dropdown">
-                      <Dropdown.Item href="#/industry-type">Industry Type</Dropdown.Item>
-                      <Dropdown.Item href="#/company-name">Company Name</Dropdown.Item>
-                      <Dropdown.Item href="#/district">District</Dropdown.Item>
-                      <Dropdown.Item href="#/state">State</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
+  <Dropdown.Menu className="no-scroll-dropdown p-3">
+  <div className="form-check">
+      <input type="checkbox" className="form-check-input" id="industry-type" />
+      <label className="form-check-label" htmlFor="industry-type">Company </label>
+    </div>
+    <div className="form-check">
+      <input type="checkbox" className="form-check-input" id="industry-type" />
+      <label className="form-check-label" htmlFor="industry-type">Industry Type</label>
+    </div>
+   
+    <div className="form-check">
+      <input type="checkbox" className="form-check-input" id="district" />
+      <label className="form-check-label" htmlFor="district">District</label>
+    </div>
+    <div className="form-check">
+      <input type="checkbox" className="form-check-input" id="state" />
+      <label className="form-check-label" htmlFor="state">State</label>
+    </div>
+    <div className="d-flex justify-content-start mt-3">
+      <Button variant="#236a80" size="sm"  style={{backgroundColor:'#236a80' , color:'white'}}>
+        Select
+      </Button>
+    </div>
+  </Dropdown.Menu>
+</Dropdown>
 
                 </Nav>
               </Navbar.Collapse>
@@ -96,7 +117,7 @@ function Maindashboard() {
                     border: 'none', 
                     // paddingRight: '40px' ,
                     // marginInline:'10px',
-                    width:'100%'
+                    width:'80%'
                   }} 
                 />
                 <i 
@@ -116,15 +137,20 @@ function Maindashboard() {
           
           <div className='flex-md-row  mt-3 button-section'>
             <div className='d-flex  flex-md-row justify-content-around align-items-center '>
-              <Dropdown className='m-2 buttonbg rounded'>
-                <Dropdown.Toggle className="btn buttonbg shadow" style={{ background: '#236a80', border: 'none' }}>
-                  Calibration
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item href="/add-calibartion">Add Calibration</Dropdown.Item>
-                  <Dropdown.Item href="/view-calibartion">View Calibration</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+            <Dropdown className='m-2 buttonbg rounded'>
+  <Dropdown.Toggle 
+    className="btn buttonbg shadow" 
+    style={{ background: '#236a80', border: 'none' }}
+    id="dropdown-basic"
+  >
+    Calibration
+  </Dropdown.Toggle>
+
+  <Dropdown.Menu>
+    <Dropdown.Item href="/add-calibartion">Add Calibration</Dropdown.Item>
+    <Dropdown.Item href="/view-calibartion">View Calibration</Dropdown.Item>
+  </Dropdown.Menu>
+</Dropdown>
 
               <Dropdown className='m-2'>
                 <Dropdown.Toggle className="btn buttonbg shadow" style={{ background: '#236a80', border: 'none' }}>

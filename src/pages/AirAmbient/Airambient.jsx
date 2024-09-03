@@ -1,8 +1,8 @@
 import React , { useState }  from 'react'
-import Maindashboard from '../Maindashboard/Maindashboard'
 import waterDrop from '../../assests/images/windimage.png'
 import DashboardSam from '../Dashboard/DashboardSam';
 import AirGraphPopup from './AirGraphPopup';
+import Hedaer from '../Header/Hedaer';
 
 
 
@@ -53,10 +53,26 @@ function  Airambient()  {
         <div className="col-lg-9 col-12 ">
             <div className="row">
                 <div className="col-12">
-                    <Maindashboard />
+                    <Hedaer />
                 </div>
             </div>
             <div>
+            <div className='d-flex justify-content-between prevnext mt-5 ps-5 pe-5'>
+            <div>
+              <button className='btn btn-outline-dark'>
+                <i className="fa-solid fa-arrow-left me-1"></i>Prev
+              </button>
+            </div>
+            <h1 className='text-center'>Air Dashboard</h1>
+            <div>
+              <button className='btn btn-outline-dark'>
+                Next <i className="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+          <div><h5 className='d-flex justify-content-end me-5 mt-3'><b>Analyser Health :</b> <span className='text-success'>Good</span></h5>
+          </div>
+
           <div className="row" style={{overflowX:'hidden'}}>
             <div className="col-12 col-md-12 grid-margin">
                 <div className="col-12 d-flex justify-content-between align-items-center m-3" >

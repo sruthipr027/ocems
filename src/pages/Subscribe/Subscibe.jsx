@@ -1,10 +1,9 @@
 import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';  // Toastify styles
 import { useNavigate } from 'react-router-dom';
-import FooterM from '../FooterMain/FooterM';
-import Maindashboard from '../Maindashboard/Maindashboard';
 import DashboardSam from '../Dashboard/DashboardSam';
 import './subscribe.css';
+import Hedaer from '../Header/Hedaer';
 
 function Subscibe() {
     const navigate = useNavigate();
@@ -37,7 +36,7 @@ function Subscibe() {
         <div className="col-lg-9 col-12 ">
             <div className="row">
                 <div className="col-12">
-                    <Maindashboard />
+                    <Hedaer />
                 </div>
             </div>
             <div className='d-flex align-items-between justify-content-between m-3 mt-5 ' style={{fontSize:'20px'}}>

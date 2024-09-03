@@ -1,6 +1,7 @@
 .card {
-    background: linear-gradient(-90deg, #8ab9c8,#f2f7f9);
-    border: none;
+  background: linear-gradient(-90deg, #ffffff, #51b8d7);
+  border: none;
+    color: white;
 }
 @media (max-width: 768px) {
     .card {

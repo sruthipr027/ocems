@@ -4,6 +4,7 @@ import './water.css';
 import waterDrop from '../../assests/images/water.png';
 import DashboardSam from '../Dashboard/DashboardSam';
 import WaterGraphPopup from './WaterGraphPopup';
+import Hedaer from '../Header/Hedaer';
 
 function Water() {
   const [showPopup, setShowPopup] = useState(false);
@@ -51,11 +52,14 @@ function Water() {
           <DashboardSam />
         </div>
         <div className="col-lg-9 col-12">
-          <div className="row">
+          <div>
+            <Hedaer/>
+          </div>
+          {/* <div className="row">
             <div className="col-12">
               <Maindashboard />
             </div>
-          </div>
+          </div> */}
           <div className='d-flex justify-content-between prevnext mt-5 ps-5 pe-5'>
             <div>
               <button className='btn btn-outline-dark'>
@@ -69,7 +73,8 @@ function Water() {
               </button>
             </div>
           </div>
-          <div><h5 className='d-flex justify-content-end me-5 mt-3'><b>Analyser Health :</b> <span className='text-success'>Good</span></h5></div>
+          <div><h5 className='d-flex justify-content-end me-5 mt-3'><b>Analyser Health :</b> <span className='text-success'>Good</span></h5>
+          </div>
 
           <div className="row " style={{ overflowX: 'hidden' }}>
             <div className="col-12 col-md-12 grid-margin">

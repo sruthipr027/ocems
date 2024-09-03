@@ -37,7 +37,7 @@
 }
 @media (max-width: 1500px){
   .buttonbg{
-    width: 230px;
+    width: 250px;
   }
 }
 @media (max-width: 1200px){
@@ -117,8 +117,29 @@
   overflow-y: visible !important; /* Ensure all items are visible */
 }
 
+
+
 .dropdown-menu {
-  max-height: none; /* Prevent scrolling by removing height restrictions */
-  overflow-y: visible; /* Ensure all items are visible */
+  display: block; /* Ensure dropdown is displayed */
+  position: absolute;
+ 
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  overflow-y: hidden;
 }
 
+.dropdown-menu.show {
+  display: block; /* Ensure it shows when toggled */
+}
+.dropdown-menu .form-check {
+  padding: 5px 10px; /* Adjust padding as needed */
+}
+
+.dropdown-menu .form-check-input {
+  margin-right: 10px;
+}
+
+.dropdown-menu .form-check-label {
+  font-weight: normal;
+}

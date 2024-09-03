@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import FooterM from '../FooterMain/FooterM';
 import Maindashboard from '../Maindashboard/Maindashboard';
 import DashboardSam from '../Dashboard/DashboardSam';
+import Hedaer from '../Header/Hedaer';
 
 
 function Notification() {
@@ -26,7 +27,7 @@ function Notification() {
         <div className="col-lg-9 col-12 ">
             <div className="row">
                 <div className="col-12">
-                    <Maindashboard />
+                    <Hedaer/>
                 </div>
             </div>
             <div>

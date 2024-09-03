@@ -1,6 +1,6 @@
 import React from 'react';
-import Maindashboard from '../Maindashboard/Maindashboard';
 import DashboardSam from '../Dashboard/DashboardSam';
+import Hedaer from '../Header/Hedaer';
 
 function Noise() {
   return (
@@ -14,7 +14,7 @@ function Noise() {
         <div className="col-lg-9 col-12">
           <div className="row">
             <div className="col-12">
-              <Maindashboard />
+              <Hedaer />
             </div>
           </div>
           <div className='d-flex justify-content-between prevnext mt-5 ps-5 pe-5'>

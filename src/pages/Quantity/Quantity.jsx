@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Maindashboard from '../Maindashboard/Maindashboard';
 import DashboardSam from '../Dashboard/DashboardSam';
 import { Chart, registerables } from 'chart.js';
+import Hedaer from '../Header/Hedaer';
 
 Chart.register(...registerables);
 
@@ -20,12 +21,12 @@ function Quantity() {
           {
             label: 'FL - Inlet raw sewage, KLD',
             data: [592.3, 492.8, 543.7, 453.5, 682.8, 548.8, 510.5, 494.7, 565.2, 440.0, 559.2, 579.2, 1018.4, 603.4, 525.1, 385.9],
-            backgroundColor: '#3367D6',
+            backgroundColor: '#8ab9c8',
           },
           {
             label: 'FL - Treated Water, KLD',
             data: [565.3, 567.0, 577.4, 373.1, 522.1, 518.4, 496.1, 502.7, 535.1, 424.5, 505.1, 486.3, 916.6, 429.5, 390.0, 344.1],
-            backgroundColor: '#6EA8FE',
+            backgroundColor: '#236a80',
           }
         ]
       },
@@ -88,14 +89,17 @@ function Quantity() {
         <div className="col-lg-9 col-12">
           <div className="row">
             <div className="col-12">
-              <Maindashboard />
+              <Hedaer />
             </div>
           </div>
+          <h2 className='text-center'>Quantity Dashboard</h2>
+
           
           <div className="row" style={{ overflowX: 'hidden' }}>
             {/* Table Card */}
             <div className="col-12 col-md-12 grid-margin">
-              <div className="card mb-3 mt-5" style={{ padding: '20px', backgroundColor: '#f9fafc' , borderRadius:'10px' }}>
+              <div className="cardquantity mb-3 mt-5" style={{ padding: '20px',
+    background: 'linear-gradient(90deg, #3c798b, #bde3ee)', borderRadius:'10px' }}>
                 <div className="card-body " style={{borderRadius:'10px'}}>
                   <h5 className="card-title">Parameter Data</h5>
                   <div style={{ overflowX: 'auto' }}>
@@ -124,7 +128,7 @@ function Quantity() {
             
             {/* Graph Card */}
             <div className="col-12 col-md-12 grid-margin">
-              <div className="card mb-3" style={{ padding: '20px' }}>
+              <div className="cardgraph mb-3" style={{ padding: '20px' }}>
                 <div className="card-body">
                   <h5 className="card-title">Total FL Sewage Graph</h5>
                   <div className="col-12">
