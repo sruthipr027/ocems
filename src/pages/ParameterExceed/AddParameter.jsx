@@ -5,8 +5,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';  // Toastify styles
 import { useNavigate } from 'react-router-dom';
 import FooterM from '../FooterMain/FooterM';
-import Maindashboard from '../Maindashboard/Maindashboard';
 import DashboardSam from '../Dashboard/DashboardSam';
+import Hedaer from '../Header/Hedaer';
 
 function AddParameter() {
     const navigate = useNavigate();
@@ -51,7 +51,7 @@ function AddParameter() {
         <div className="col-lg-9 col-12 ">
             <div className="row">
                 <div className="col-12">
-                    <Maindashboard />
+                    <Hedaer />
                 </div>
             </div>
             <div>
