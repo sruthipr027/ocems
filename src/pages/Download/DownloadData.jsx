@@ -56,7 +56,7 @@ function DownloadData() {
                 <div className="col-12 d-flex justify-content-between align-items-center m-3" >
                     <h1 className='text-center mt-5'>Download IoT Data</h1>
                 </div>
-                <div className="card m-5">
+                <div className="card m-1">
                     <div className="card-body">
                         <form className='m-5 p-5'>
                             <div className="row">
