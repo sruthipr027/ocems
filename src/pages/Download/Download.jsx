@@ -43,12 +43,13 @@ function Download() {
             <div className="col-12 col-md-12 grid-margin">
                 <div className="col-12 d-flex justify-content-between align-items-center m-3 p-5" >
                     <img src={logo} alt="" />
-                    <h1 className='text-center mt-5'>Download IoT Data</h1>
-                    <button className='btn' onClick={handlehome}>home</button>
+                   
+                    <button className='btn' onClick={handlehome} style={{backgroundColor:'white'}}>Home</button>
                 </div>
-                <div className="card m-5">
+                <h1 className='text-center mt-5'>Download IoT Data</h1>
+                <div className="card ms-2 me-2">
                     <div className="card-body">
-                        <form className='m-5 p-5'>
+                        <form className=' p-5'>
                             <div className="row">
                                 {/* Select Industry */}
                                 <div className="col-lg-6 col-md-6 mb-4">
