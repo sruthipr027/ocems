@@ -86,3 +86,10 @@
   display: flex;
   justify-content: space-between;
 }
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; /* Reduced height */
+  margin-top: 10px; /* Reduced margin from the top */
+}

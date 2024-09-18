@@ -1,136 +1,259 @@
-import React from 'react';
-import { Button } from 'react-bootstrap';  // Import Button
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';  // Toastify styles
-import { useNavigate } from 'react-router-dom';
-import FooterM from '../FooterMain/FooterM';
+import axios from "axios";
+import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { API_URL } from "../../utils/apiConfig";
+import { CalibrationContext } from '../CalibartionPage/CalibrationContext';  // Context to store the report data
 import DashboardSam from '../Dashboard/DashboardSam';
 import Hedaer from '../Header/Hedaer';
+import FooterM from '../FooterMain/FooterM';
+import Layout from "../Layout/Layout";
 
-function Report() {
-    const navigate = useNavigate();
+const Report = () => {
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [company, setCompany] = useState("");
+  const [userName, setUserName] = useState(""); 
+  const [users, setUsers] = useState([]);
+  const { addReport } = useContext(CalibrationContext);  // Use context to store report
+  const navigate = useNavigate();
 
-    const industryType = [
-        { category: "Sugar" },
-        { category: "Cement" },
-        { category: "Distillery" },
-        { category: "Petrochemical" },
-        { category: "Pulp & Paper" },
-        { category: "Fertilizer" },
-        { category: "Tannery" },
-        { category: "Pesticides" },
-        { category: "Thermal Power Station" },
-        { category: "Caustic Soda" },
-        { category: "Pharmaceuticals" },
-        { category: "Chemical" },
-        { category: "Dye and Dye Stuff" },
-        { category: "Refinery" },
-        { category: "Copper Smelter" },
-        { category: "Iron and Steel" },
-        { category: "Zinc Smelter" },
-        { category: "Aluminium" },
-        { category: "STP/ETP" },
-        { category: "NWMS/SWMS" },
-        { category: "Noise" },
-        { category: "Chemical" },
-        { category: "Other" },
-    ];
-    const handlehome=()=>{
-        navigate('/')
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/api/getallusers`);
+        const filteredUsers = response.data.users.filter(user => user.userType === "user");
+        setUsers(filteredUsers);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  const industryType = [
+    { category: "Sugar" },
+    { category: "Cement" },
+    { category: "Distillery" },
+    { category: "Petrochemical" },
+    { category: "Plup & Paper" },
+    { category: "Fertilizer" },
+    { category: "Tannery" },
+    { category: "Pecticides" },
+    { category: "Thermal Power Station" },
+    { category: "Caustic Soda" },
+    { category: "Pharmaceuticals" },
+    { category: "Dye and Dye Stuff" },
+    { category: "Refinery" },
+    { category: "Copper Smelter" },
+    { category: "Iron and Steel" },
+    { category: "Zinc Smelter" },
+    { category: "Aluminium" },
+    { category: "STP/ETP" },
+    { category: "NWMS/SWMS" },
+    { category: "Noise" },
+    { category: "Zinc Smelter" },
+    { category: "Other" },
+  ];
+
+  // Handle form submission for validation and navigation
+  const handleCheckValidate = (e) => {
+    e.preventDefault();
+    if (dateFrom && dateTo && industry && company && userName) {
+      navigate("/check-validate", {
+        state: {
+          dateFrom,
+          dateTo,
+          industry,
+          company,
+          userName,
+        }
+      });
+    } else {
+      toast.error('Please fill in all fields');
     }
+  };
+
+  // Handle form submission to add report
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (dateFrom && dateTo && industry && company && userName) {
+      const reportData = {
+        industry,
+        company,
+        fromDate: dateFrom,
+        toDate: dateTo,
+        username: userName,
+      };
+      addReport(reportData);
+      toast.success('Report added successfully!');
+      navigate('/view-report');
+    } else {
+      toast.error('Please fill in all fields');
+    }
+  };
+
   return (
-  
+    <div>
     <div className="container-fluid">
-    <div className="row">
-        {/* Sidebar (hidden on mobile) */}
-        <div className="col-lg-3 d-none d-lg-block ">
-            <DashboardSam />
+    <div className="row" style={{ backgroundColor: 'white' }}>
+      {/* Sidebar (hidden on mobile) */}
+    
+      {/* Main content */}
+      <div className="col-lg-12 col-12 ">
+        <div className="row">
+          <div className="col-12">
+          <Layout/>
+          </div>
         </div>
-        {/* Main content */}
-        <div className="col-lg-9 col-12 ">
-            <div className="row">
-                <div className="col-12">
-                    <Hedaer/>
-                </div>
-            </div>
-            <div>
-          <div className="row" style={{overflowX:'hidden'}}>
-            <div className="col-12 col-md-12 grid-margin">
-                <div className="col-12 d-flex justify-content-between align-items-center m-3" >
-                    
-                    <h1 className='text-center mt-5' style={{justifyContent:'center'}}>Validate Data</h1>
-                    
-                </div>
-                <div className="card m-1">
-                    <div className="card-body">
-                        <form className='m-5 p-5'>
-                            <div className="row">
-                                {/* Select Industry */}
-                                <div className="col-lg-6 col-md-6 mb-4">
-                                    <div className="form-group">
-                                        <label htmlFor="industry" className="form-label">Select Industry</label>
-                                        <select id="industry" className="form-control text-start" style={{ width: '100%', padding: '15px', borderRadius: '10px' }}>
-                                            <option>select</option>
-                                            {industryType.map((industry, index) => (
-                                                <option key={index} value={industry.category}>{industry.category}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                </div>
 
-                                {/* Select Company */}
-                                <div className="col-lg-6 col-md-6 mb-4">
-                                    <div className="form-group">
-                                        <label htmlFor="company" className="form-label">Select Company</label>
-                                        <select id="company" className="form-control" style={{ width: '100%', padding: '15px', borderRadius: '10px' }}>
-                                            <option>select</option>
-                                            {/* Add options for companies */}
-                                        </select>
-                                    </div>
-                                </div>
-
-                                {/* From Date */}
-                                <div className="col-lg-6 col-md-6 mb-4">
-                                    <div className="form-group">
-                                        <label htmlFor="from-date" className="form-label">From Date</label>
-                                        <input id="from-date" className="form-control" type="date" style={{ width: '100%', padding: '15px', borderRadius: '10px' }} />
-                                    </div>
-                                </div>
-
-                                {/* To Date */}
-                                <div className="col-lg-6 col-md-6 mb-4">
-                                    <div className="form-group">
-                                        <label htmlFor="to-date" className="form-label">To Date</label>
-                                        <input id="to-date" className="form-control" type="date" style={{ width: '100%', padding: '15px', borderRadius: '10px' }} />
-                                    </div>
-                                </div>
-
-                                {/* Download Format */}
-                                <div className="col-lg-6 col-md-6 mb-4">
-                                    <div className="form-group">
-                                        <label htmlFor="format" className="form-label">User</label>
-                                        <select id="format" className="form-control" style={{ width: '100%', padding: '15px', borderRadius: '10px' }}>
-                                            <option>select</option>
-                                            <option value="pdf">User1</option>
-                                            <option value="csv">User2</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="submit" className="btn" style={{backgroundColor:'#236a80' , color:'white'}}>Check and validate</button>
-                        </form>
-                        <ToastContainer />
-                    </div>
-                </div>
-            </div>
-           
-        </div>
-        <FooterM/>
+    
       </div>
-        </div>
-    </div>
-</div>
-  )
-}
+      
 
-export default Report
+    </div>
+  </div>
+
+    /*  */
+    <div className="container-fluid">
+      <div className="row">
+       
+        <div className="col-lg-3 d-none d-lg-block">
+         
+        </div>
+     
+        <div className="col-lg-9 col-12">
+          <div className="row">
+            <div className="col-12">
+              
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12 col-md-12 grid-margin">
+              <div className="card m-1">
+                <div className="card-body">
+                  <h1 className='text-center mt-3'>Validate Data</h1>
+                  <form className='m-5 p-5' onSubmit={handleCheckValidate}>
+                    <div className="row">
+                  
+                      <div className="col-lg-6 mb-4">
+                        <div className="form-group">
+                          <label htmlFor="industry">Select Industry</label>
+                          <select
+                            id="industry"
+                            name="industry"
+                            className="form-control"
+                            value={industry}
+                            onChange={(e) => setIndustry(e.target.value)}
+                            style={{ borderRadius: '10px' }}
+                          >
+                            <option value="">Select</option>
+                            {industryType.map((industry, index) => (
+                              <option key={index} value={industry.category}>
+                                {industry.category}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+
+                      
+                      <div className="col-lg-6 mb-4">
+                        <div className="form-group">
+                          <label htmlFor="company">Select Company</label>
+                          <select
+                            id="company"
+                            name="company"
+                            className="form-control"
+                            value={company}
+                            onChange={(e) => setCompany(e.target.value)}
+                            style={{ borderRadius: '10px' }}
+                          >
+                            <option value="">Select</option>
+                            {users.map((user) => (
+                              <option key={user.companyName} value={user.companyName}>
+                                {user.companyName}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+
+                    
+                      <div className="col-lg-6 mb-4">
+                        <div className="form-group">
+                          <label htmlFor="fromDate">From Date</label>
+                          <input
+                            type="date"
+                            id="fromDate"
+                            name="fromDate"
+                            className="form-control"
+                            value={dateFrom}
+                            onChange={(e) => setDateFrom(e.target.value)}
+                            style={{ borderRadius: '10px' }}
+                          />
+                        </div>
+                      </div>
+
+                     
+                      <div className="col-lg-6 mb-4">
+                        <div className="form-group">
+                          <label htmlFor="toDate">To Date</label>
+                          <input
+                            type="date"
+                            id="toDate"
+                            name="toDate"
+                            className="form-control"
+                            value={dateTo}
+                            onChange={(e) => setDateTo(e.target.value)}
+                            style={{ borderRadius: '10px' }}
+                          />
+                        </div>
+                      </div>
+
+                    
+                      <div className="col-lg-6 mb-4">
+                        <div className="form-group">
+                          <label htmlFor="username">Select User</label>
+                          <select
+                            id="username"
+                            name="username"
+                            className="form-control"
+                            value={userName}
+                            onChange={(e) => setUserName(e.target.value)}
+                            style={{ borderRadius: '10px' }}
+                          >
+                            <option value="">Select</option>
+                            {users.map((user) => (
+                              <option key={user.userName} value={user.userName}>
+                                {user.userName}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+
+                    </div>
+                    <button type="submit" className="btn btn-primary mb-2 mt-2">Check and Validate</button>
+                  </form>
+
+                 
+                 
+
+                  <ToastContainer />
+                </div>
+              </div>
+            </div>
+          </div> 
+          <FooterM />
+        </div>
+      </div>
+    </div>
+    </div>
+  );
+};
+
+export default Report;

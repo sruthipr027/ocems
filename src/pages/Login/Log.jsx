@@ -12,7 +12,9 @@ import { loginUser } from "../../redux/features/auth/authSlice";
 
 function Log() {
   const navigate = useNavigate();
-  /* const [passShow, setPassShow] = useState(false);
+  const dispatch = useDispatch();
+
+  const [passShow, setPassShow] = useState(false);
   const [inpval, setInpval] = useState({
     email: "",
     password: "",
@@ -22,8 +24,6 @@ function Log() {
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
 
   Modal.setAppElement('#root');
@@ -77,7 +77,7 @@ function Log() {
             setModalIsOpen(true);
           } else {
             if (userType === 'admin') {
-              navigate('/dashboard');
+              navigate('/water');
             } else if (userType === 'user') {
               navigate('/account');
             }
@@ -90,85 +90,75 @@ function Log() {
           localStorage.removeItem('userdatatoken');
         });
     }
-  }; */
-  const handleLogin =()=>{
-    navigate('/water')
-  }
+  }; 
+
   const handleDownloadClick = () => {
     navigate('/download-data');  // Redirect to the download-data page
   };
 
   return (
     <div className='login-page'>
-    <div className='bg-light back rounded  shadow w-100' style={{ maxWidth: '500px', padding: '20px' }}>
-    <div className="d-flex align-items-center justify-content-between w-100 flex-nowrap" style={{ paddingTop: "10px" }}>
-
-<img className='ms-2' src={logo} alt="Logo" style={{ height: '30px', width: 'auto' }} />
-
-
-  <div className='me-2'>
-    <Button className='btn'  onClick={handleDownloadClick}   style={{ backgroundColor: '#236a80', border: 'none', whiteSpace: 'nowrap' }}>Download data</Button>
-  </div>
-</div>
-
-
-
+      <div className='bg-light back rounded  shadow w-100' style={{ maxWidth: '500px', padding: '20px' }}>
+        <div className="d-flex align-items-center justify-content-between w-100 flex-nowrap" style={{ paddingTop: "10px" }}>
+          <img className='ms-2' src={logo} alt="Logo" style={{ height: '30px', width: 'auto' }} />
+          <div className='me-2'>
+            <Button className='btn' onClick={handleDownloadClick} style={{ backgroundColor: '#236a80', border: 'none', whiteSpace: 'nowrap' }}>Download data</Button>
+          </div>
+        </div>
   
-      <div className="row w-100" style={{ paddingTop: "40px" }}>
-        <div className="col d-flex justify-content-center align-items-center" style={{ height: "auto" }}>
-          <form className='w-100' style={{ maxWidth: '400px' }}>
-            <div className='mb-4' style={{ borderRadius: '10px' }}>
-              <input
-                type="email"
-               /*  value={inpval.email}
-                onChange={setVal} */
-                name="email"
-                id="email"
-                placeholder="Email"
-                autoComplete="email"
-                className='w-100 border border-solid shadow-lg p-3 input-box'
-              />
-            </div>
-            <div className='mb-4' style={{ borderRadius: '10px' }}>
-              <input
-                type='password'/* {!passShow ? "password" : "text"} */
-                /* onChange={setVal}
-                value={inpval.password} */
-                name="password"
-                id="password"
-                placeholder="Enter Your password"
-                autoComplete="current-password"
-                className='w-100 border border-solid shadow-lg p-3 input-box'
-              />
-            </div>
-            <div className='d-flex justify-content-between mb-2'>
-              <div className="showpass" /* onClick={() => setPassShow(!passShow)} */>
-               {/*  {!passShow ? "Show" : "Hide"} */}
+        <div className="row w-100" style={{ paddingTop: "40px" }}>
+          <div className="col d-flex justify-content-center align-items-center" style={{ height: "auto" }}>
+            <form className='w-100' style={{ maxWidth: '400px' }}>
+              <div className='mb-4' style={{ borderRadius: '10px' }}>
+                <input
+                  type="email"
+                  value={inpval.email}
+                  onChange={setVal} 
+                  name="email"
+                  id="email"
+                  placeholder="Email"
+                  autoComplete="email"
+                  className='w-100 border border-solid shadow-lg p-3 input-box'
+                />
               </div>
-              <Link to={'/reset'} style={{ textDecoration: 'none' }}>Forgot Password</Link>
-            </div>
-            <select className="input-field mb-4 w-100 border border-solid shadow-lg p-3 input-box"
-             /*  value={inpval.userType}
-              onChange={handleSelectChange} */>
-              <option value="select">Select</option>
-              <option value="admin">Admin</option>
-              <option value="user">User</option>
-            </select>
-            <div className='mb-4'>
-              <Button onClick={handleLogin} style={{ borderRadius: '20px', backgroundColor: '#236a80' , border:'none' }} className='btn w-100'
-                type="submit"
-               /*  onClick={loginuser}
-                disabled={loading} */>
-                Login
-              </Button>
-            </div>
-          </form>
+              <div className='mb-4' style={{ borderRadius: '10px' }}>
+                <input
+                  type={passShow ? "text" : "password"} 
+                  onChange={setVal}
+                  value={inpval.password} 
+                  name="password"
+                  id="password"
+                  placeholder="Enter Your password"
+                  autoComplete="current-password"
+                  className='w-100 border border-solid shadow-lg p-3 input-box'
+                />
+              </div>
+              <div className='d-flex justify-content-between mb-2'>
+                <div className="showpass" onClick={() => setPassShow(!passShow)}>
+                  {passShow ? "Hide" : "Show"}
+                </div>
+                <Link to={'/reset'} style={{ textDecoration: 'none' }}>Forgot Password</Link>
+              </div>
+              <select className="input-field mb-4 w-100 border border-solid shadow-lg p-3 input-box"
+                value={inpval.userType}
+                onChange={handleSelectChange} >
+                <option value="select">Select</option>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+              </select>
+              <div className='mb-4'>
+                <Button style={{ borderRadius: '20px', backgroundColor: '#236a80' , border:'none' }} className='btn w-100'
+                  onClick={loginuser}
+                  disabled={loading} >
+                  Login
+                </Button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
-    <ToastContainer />
-  </div>
-  
   );
 }
 

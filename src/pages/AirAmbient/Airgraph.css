@@ -2,7 +2,6 @@
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: white; /* Ensures a clean background */
 }
 
 .flight-schedule-header {
@@ -15,4 +14,12 @@
 
 .flight-schedule-chart {
     height: 200px; /* Controls the height of the chart */
+}
+.custom-img {
+    position: absolute;
+    bottom: 40px; /* Adjust this to move the image slightly out of the card */
+    right: -20px;  /* Adjust this to move the image slightly out to the right */
+    width: 40%;   /* Adjust the width as needed */
+    transform: rotate(-10deg); /* Optional: rotate the image to match the style */
+    z-index: 20;  /* Ensure the image is above other elements */
 }

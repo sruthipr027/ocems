@@ -1,148 +1,235 @@
-import React, { useEffect } from 'react';
-import Maindashboard from '../Maindashboard/Maindashboard';
-import DashboardSam from '../Dashboard/DashboardSam';
-import { Chart, registerables } from 'chart.js';
-import Hedaer from '../Header/Hedaer';
+import React, { useEffect, useState } from "react";
+import { fetchAverageDataByUserName, fetchDifferenceDataByUserName } from "../../redux/features/iotData/iotDataSlice";
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+} from "recharts";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useOutletContext } from 'react-router-dom';
+import Layout from '../Layout/Layout';
 
-Chart.register(...registerables);
+const Quantity = () => {
+  const dispatch = useDispatch();
+  const { userData, userType } = useSelector((state) => state.user);
+  const { averageData, differenceData, loading, error } = useSelector((state) => state.iotData);
+  const [searchResult, setSearchResult] = useState(null);
+  const [searchError, setSearchError] = useState("");
+  const [interval, setInterval] = useState("year");
+  const { searchTerm } = useOutletContext();
 
-function Quantity() {
   useEffect(() => {
-    const ctx = document.getElementById('quantityChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: [
-          '06-Jun', '07-Jun', '08-Jun', '09-Jun', '10-Jun',
-          '11-Jun', '12-Jun', '13-Jun', '14-Jun', '15-Jun',
-          '16-Jun', '17-Jun', '18-Jun', '19-Jun', '20-Jun', '21-Jun'
-        ],
-        datasets: [
-          {
-            label: 'FL - Inlet raw sewage, KLD',
-            data: [592.3, 492.8, 543.7, 453.5, 682.8, 548.8, 510.5, 494.7, 565.2, 440.0, 559.2, 579.2, 1018.4, 603.4, 525.1, 385.9],
-            backgroundColor: '#8ab9c8',
-          },
-          {
-            label: 'FL - Treated Water, KLD',
-            data: [565.3, 567.0, 577.4, 373.1, 522.1, 518.4, 496.1, 502.7, 535.1, 424.5, 505.1, 486.3, 916.6, 429.5, 390.0, 344.1],
-            backgroundColor: '#236a80',
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          x: {
-            beginAtZero: true,
-            grid: {
-              display: false,
-            }
-          },
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: '#e0e0e0',
-            }
-          }
-        },
-        plugins: {
-          legend: {
-            display: true,
-            position: 'top',
-          },
-          tooltip: {
-            enabled: true,
-          }
-        }
+    const fetchData = async (userName) => {
+      try {
+        await dispatch(fetchAverageDataByUserName({ userName, interval })).unwrap();
+      } catch (error) {
+        toast.error(`Average Data for ${interval} is not found`);
       }
-    });
 
-    return () => {
-      const chartInstance = Chart.getChart(ctx);
-      if (chartInstance) {
-        chartInstance.destroy();
+      try {
+        await dispatch(fetchDifferenceDataByUserName(userName)).unwrap();
+        setSearchResult(userName);
+        setSearchError("");
+      } catch (error) {
+        toast.error("Difference data is not found");
+        setSearchResult(null);
+        setSearchError("No result found for this userID");
       }
     };
-  }, []);
 
-  const tableData = {
-    headers: [
-      'Parameter', '06-Jun', '07-Jun', '08-Jun', '09-Jun', '10-Jun',
-      '11-Jun', '12-Jun', '13-Jun', '14-Jun', '15-Jun',
-      '16-Jun', '17-Jun', '18-Jun', '19-Jun', '20-Jun', '21-Jun'
-    ],
-    rows: [
-      ['FL - Inlet raw sewage, KLD', 592.3, 492.8, 543.7, 453.5, 682.8, 548.8, 510.5, 494.7, 565.2, 440.0, 559.2, 579.2, 1018.4, 603.4, 525.1, 385.9],
-      ['FL - Treated Water, KLD', 565.3, 567.0, 577.4, 373.1, 522.1, 518.4, 496.1, 502.7, 535.1, 424.5, 505.1, 486.3, 916.6, 429.5, 390.0, 344.1]
-    ]
+    if (searchTerm) {
+      fetchData(searchTerm);
+    } else if (userData && userType === 'user') {
+      fetchData(userData.validUserOne.userName);
+    }
+  }, [searchTerm, userData, userType, interval, dispatch]);
+
+  const handleIntervalChange = (newInterval) => {
+    setInterval(newInterval);
+    if (searchResult) {
+      dispatch(fetchAverageDataByUserName({ userName: searchResult, interval: newInterval }))
+        .unwrap()
+        .catch(() => toast.error(`Average Data for ${newInterval} is not found`));
+    } else if (userData && userType === 'user') {
+      dispatch(fetchAverageDataByUserName({ userName: userData.validUserOne.userName, interval: newInterval }))
+        .unwrap()
+        .catch(() => toast.error(`Average Data for ${newInterval} is not found`));
+    }
   };
 
-  return (
-    <div className="container-fluid">
-      <div className="row">
-        {/* Sidebar (hidden on mobile) */}
-        <div className="col-lg-3 d-none d-lg-block">
-          <DashboardSam />
-        </div>
-        {/* Main content */}
-        <div className="col-lg-9 col-12">
-          <div className="row">
-            <div className="col-12">
-              <Hedaer />
-            </div>
-          </div>
-          <h2 className='text-center'>Quantity Dashboard</h2>
+  const formatXAxis = (tickItem) => {
+    const date = new Date(tickItem);
+    if (interval === "hour") {
+      return date.toLocaleTimeString();
+    } else if (interval === "day") {
+      return date.toLocaleDateString('en-US', { weekday: 'short' });
+    } else if (interval === "week" || interval === "sixmonth") {
+      return date.toLocaleDateString();
+    } else if (interval === "month") {
+      return date.toLocaleString('en-US', { month: 'short' });
+    } else if (interval === "year") {
+      return date.getFullYear();
+    }
+    return tickItem;
+  };
 
-          
-          <div className="row" style={{ overflowX: 'hidden' }}>
-            {/* Table Card */}
-            <div className="col-12 col-md-12 grid-margin">
-              <div className="cardquantity mb-3 mt-5" style={{ padding: '20px',
-    background: 'linear-gradient(90deg, #3c798b, #bde3ee)', borderRadius:'10px' }}>
-                <div className="card-body " style={{borderRadius:'10px'}}>
-                  <h5 className="card-title">Parameter Data</h5>
-                  <div style={{ overflowX: 'auto' }}>
-                    <table className="table table-bordered" style={{ background: '#f7fafc', margin: '0', padding: '15px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-                      <thead style={{ background: 'linear-gradient(-90deg, #8ab9c8,#f2f7f9)' }}>
-                        <tr>
-                          {tableData.headers.map((header, index) => (
-                            <th key={index} style={{ padding: '10px', textAlign: 'center' }}>{header}</th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {tableData.rows.map((row, index) => (
-                          <tr key={index}>
-                            {row.map((cell, cellIndex) => (
-                              <td key={cellIndex} style={{ padding: '10px', textAlign: 'center', backgroundColor: cellIndex === 0 ? '#eaf4f9' : '#fff' }}>{cell}</td>
-                            ))}
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+  const getDatesHeaders = () => {
+    if (!differenceData || differenceData.length === 0) return [];
+    return ['date']; // Assuming these are the date headers
+  };
+
+  if (loading) {
+    return <div>Loading data...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading data: {error}</div>;
+  }
+
+  return (
+    <div>
+      <div className="container-fluid">
+        <div className="row" style={{ backgroundColor: 'white' }}>
+          {/* Sidebar (hidden on mobile) */}
+          <div className="col-lg-12 col-12 ">
+            <div className="row">
+              <div className="col-12">
+                <Layout/>
               </div>
             </div>
-            
-            {/* Graph Card */}
-            <div className="col-12 col-md-12 grid-margin">
-              <div className="cardgraph mb-3" style={{ padding: '20px' }}>
-                <div className="card-body">
-                  <h5 className="card-title">Total FL Sewage Graph</h5>
-                  <div className="col-12">
-                    <canvas id="quantityChart" width="400" height="200"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div className="container-fluid">
+        <div className="row">
+        <div className="col-lg-3 d-none d-lg-block">
+         
+         </div>
+          <div className="col-lg-9 col-12">
+            <div className="row">
+              <div className="col-12">
+                <div className="content-wrapper">
+                  <div className="row page-title-header">
+                    <div className="col-12">
+                      <div className="page-header">
+                        <h4 className="page-title">Quantity Dashboard</h4>
+                      </div>
+                    </div>
                   </div>
+
+                  <div className="card mb-4">
+                    <div className="card-body">
+                      <h1>{searchResult ? `User: ${searchResult}` : searchError}</h1>
+                    </div>
+                  </div>
+
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="row mt-5">
+                        <div className="col-md-12">
+                          <h2>Water Flow</h2>
+                          <div className="table-responsive mt-3">
+                            <table className="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th>Sl.No</th>
+                                  <th>Parameter</th>
+                                  {getDatesHeaders().map((date, index) => (
+                                    <th key={index}>{date}</th>
+                                  ))}
+                                  <th>Inflow Difference</th>
+                                  <th>Final Flow Difference</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {Array.isArray(differenceData) && differenceData.length > 0 ? (
+                                  differenceData.map((data, index) => (
+                                    <React.Fragment key={index}>
+                                      <tr>
+                                        <td>{index + 1}</td>
+                                        <td>FL-Inlet raw sewage,KLD</td>
+                                        <td>{data.date}<br/>{data.day}</td>
+                                        <td>{data.inflowDifference}</td>
+                                        <td></td>
+                                      </tr>
+                                      <tr>
+                                        <td>{index + 1}</td>
+                                        <td>FL-Treated Water,KLD</td>
+                                        <td>{data.date}<br/>{data.day}</td>
+                                        <td></td>
+                                        <td>{data.finalflowDifference}</td>
+                                      </tr>
+                                    </React.Fragment>
+                                  ))
+                                ) : (
+                                  <tr>
+                                    <td colSpan={getDatesHeaders().length + 5} className="text-center">No data available</td>
+                                  </tr>
+                                )}
+                              </tbody>
+                            </table>
+                          </div>
+                          <ToastContainer />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="card mt-4 mb-5">
+                    <div className="card-body">
+                      <div className="row mt-5">
+                        <div className="col-md-12">
+                          <h2 className="m-3">Total FL Sewage Graph</h2>
+                          <div className="btn-group" role="group">
+                            <button type="button" className="btn btn-primary" onClick={() => handleIntervalChange('hour')}>Hour</button>
+                            <button type="button" className="btn btn-primary" onClick={() => handleIntervalChange('day')}>Day</button>
+                            <button type="button" className="btn btn-primary" onClick={() => handleIntervalChange('week')}>Week</button>
+                            <button type="button" className="btn btn-primary" onClick={() => handleIntervalChange('month')}>Month</button>
+                            <button type="button" className="btn btn-primary" onClick={() => handleIntervalChange('sixmonth')}>Six Months</button>
+                            <button type="button" className="btn btn-primary" onClick={() => handleIntervalChange('year')}>Year</button>
+                          </div>
+                          <ResponsiveContainer width="100%" height={400}>
+                            <BarChart data={searchResult ? averageData : []}>
+                              <CartesianGrid strokeDasharray="3 3" />
+                              <XAxis dataKey="timestamp" tickFormatter={formatXAxis} />
+                              <YAxis />
+                              <Tooltip />
+                              <Legend />
+                              <Bar dataKey="inflow" fill="#8884d8" />
+                              <Bar dataKey="finalflow" fill="#82ca9d" />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <footer className="footer">
+                    <div className="container-fluid clearfix">
+                      <span className="text-muted d-block text-center text-sm-left d-sm-inline-block">
+                        AquaBox Control and Monitor System
+                      </span>
+                      <span className="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+                        © <a href="" target="_blank">EnviRobotics</a> 2022
+                      </span>
+                    </div>
+                  </footer>
                 </div>
               </div>
             </div>
           </div>
-          
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Quantity;

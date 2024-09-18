@@ -117,7 +117,8 @@ const userLogSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(fetchUserById.pending, (state) => {
-        state.loading = false;
+        state.loading = true;
+        state.selectedUser = null;  // Clear previous selected user
       })
       .addCase(fetchUserById.fulfilled, (state, action) => {
         state.loading = false;
@@ -128,7 +129,7 @@ const userLogSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(fetchUserByUserName.pending,(state)=>{
-        state.loading = false;
+        state.loading = true;
       })
       .addCase(fetchUserByUserName.fulfilled,(state,action)=>{
         state.loading = false;
@@ -170,7 +171,7 @@ const userLogSlice = createSlice({
       })
       .addCase(deleteUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.users = state.users.filter(user => user.userName !== action.payload);
+        state.users = state.users.filter(user => user.userName !== action.payload.userName);
       })
       .addCase(deleteUser.rejected, (state, action) => {
         state.loading = false;
@@ -182,3 +183,4 @@ const userLogSlice = createSlice({
 export const { setFilteredUsers, clearState } = userLogSlice.actions;
 
 export default userLogSlice.reducer;
+

@@ -58,7 +58,10 @@
     min-width: 150px; /* Adjust the minimum width as needed */
     white-space: nowrap; /* Prevents text from wrapping */
 }
-
+.customwidth{
+    min-width: 100px; /* Adjust the minimum width as needed */
+    white-space: nowrap; 
+}
 .search-container {
     display: flex;
     align-items: center;

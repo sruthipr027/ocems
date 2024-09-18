@@ -1,4 +1,8 @@
-import { Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser } from './redux/features/user/userSlice';
 import './App.css';
 import Log from './pages/Login/Log';
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -28,66 +32,131 @@ import UsersLog from './pages/ManageUsers/Userlog';
 import Account from './pages/Account/Account';
 import SupportAnalyser from './pages/SupportAnalyser/SupportAnalyser';
 import Edit from './pages/ManageUsers/Edit';
+import { CalibrationProvider } from './pages/CalibartionPage/CalibrationContext';
+import EditCalibration from './pages/CalibartionPage/EditCalibration';
+import ReportCheck from './pages/Report/ReportCheck';
+import EditReport from './pages/Report/EditReport';
+import CalibrationExceeded from './pages/CalibartionPage/CalibrationExceeded';
+import { UserProvider } from './pages/ManageUsers/UserContext';
+import Viewnotification from './pages/Notification/Viewnotification';
+import { NotificationProvider } from './pages/Notification/NotificationContext';
+import ViewReportUser from './pages/Report/ViewReportUser';
+import EditParameter from './pages/ParameterExceed/EditParameter';
+import PublicLayout from './pages/PublicLayout/PublicLayout';
+import PrivateLayout from './pages/PrivateLayout/PrivateLayout';
+import Hedaer from './pages/Header/Hedaer';
+import Layout from './pages/Layout/Layout';
+import Transcation from './pages/Transactions/Transcation';
 
 function App() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { userData, loading, userType } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(fetchUser())
+      .unwrap()
+      .then((responseData) => {
+        if (responseData.status === 401 || !responseData.validUserOne) {
+          console.log("User not Valid");
+          navigate('/');
+        } else {
+          console.log("User verified");
+        }
+      })
+      .catch((error) => {
+        console.error("Error Validating User:", error);
+        navigate('/');
+      });
+  }, [dispatch, navigate]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="App">
-      
-      <Routes>
-       
-        <Route path='/' element={<Log/>}></Route>
-        <Route path='/users-log' element={<Dashboard/>}></Route>
-        <Route path='/reset-password' element={<Reset/>}></Route>
-        <Route path='/reset' element={<ResetEmail/>}></Route>
-        <Route path='/dashboard' element={<Dashboard/>}></Route>
-        <Route path='/dashboard-dash' element={<Maindashboard/>}></Route>
-        <Route path='/quality' element={<Quality/>}></Route>
-        <Route path='/quantity' element={<Quantity/>}></Route>
-        <Route path='/ambient' element={<Airambient/>}></Route>
-        <Route path='/water' element={<Water/>}></Route>
-        <Route path='/noise' element={<Noise/>}></Route>
-        <Route path='/energy' element={<Energy/>}></Route>
-        <Route path='/download-data' element={<Download/>}></Route>
-        <Route path='/add-calibartion' element={<Calibrationpage/>}></Route>
-        <Route path='/view-calibartion' element={<ViewCalibration/>}></Route>
-        <Route path='/report' element={<Report/>}></Route>
-        <Route path='/view-report' element={<ViewReport/>}></Route>
-        <Route path='/tank' element={<Tank/>}></Route>
-        <Route path='/download' element={<DownloadData/>}></Route>
-        <Route path='/add-parameter' element={<AddParameter/>}></Route>
-        <Route path='/view-parameter' element={<ViewParameter/>}></Route>
-        <Route path='/notification' element={<Notification/>}></Route>
-        <Route path='/subscribe' element={<Subscibe/>}></Route>
-        <Route path='/live-emmision' element={<LiveEmmission/>}></Route>
-        <Route path='/manage-user' element={<UsersLog/>}></Route>
-        <Route path='/edit' element={<Edit/>}></Route>
+    
+      <CalibrationProvider>
+        <UserProvider>
+          <NotificationProvider>
+            <PublicLayout/>
+            <Routes>
+              <Route path="/" element={<PublicLayout />}>
+                <Route path="/" element={<Log />} />
+                <Route path="/reset-password" element={<Reset />} />
+                <Route path="/reset" element={<ResetEmail />} />
+                <Route path='/download-data' element={<Download/>}></Route>
+              </Route>
 
-        <Route path='/account' element={<Account/>}></Route>
-        <Route path='/support-analyser' element={<SupportAnalyser/>}></Route>
+              {/* Admin Routes */}
+              {userType === "admin" && (
+                           
+
+                <Route path='/' element={<PrivateLayout />}>
+
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/layout" element={<Layout />} />
+
+                  <Route path="/dashboard-dash" element={<Maindashboard />} />
+                  <Route path="/quality" element={<Quality />} />
+                  <Route path="/quantity" element={<Quantity />} />
+                  <Route path="/ambient" element={<Airambient />} />
+                  <Route path="/water" element={<Water />} />
+                  <Route path="/noise" element={<Noise />} />
+                  <Route path="/energy" element={<Energy />} />
+                  <Route path="/download-data" element={<Download />} />
+                  <Route path="/add-calibration" element={<Calibrationpage />} />
+                  <Route path="/view-calibration" element={<ViewCalibration />} />
+                  <Route path="/edit-calibration/:userName" element={<EditCalibration />} />
+                  <Route path="/report" element={<Report />} />
+                  <Route path="/view-report" element={<ViewReport />} />
+                  <Route path="/tank" element={<Tank />} />
+                  <Route path="/download" element={<DownloadData />} />
+                  <Route path="/add-parameter" element={<AddParameter />} />
+                  <Route path="/view-parameter" element={<ViewParameter />} />
+                  <Route path="/notification" element={<Notification />} />
+                  <Route path="/subscribe" element={<Subscibe />} />
+                  <Route path="/live-emmision" element={<LiveEmmission />} />
+                  <Route path="/account" element={<Account />} />
+                  <Route path="/support-analyser" element={<SupportAnalyser />} />
+                  <Route path="/check-validate" element={<ReportCheck />} />
+                  <Route path="/edit-report/:userName" element={<EditReport />} />
+                  <Route path="view-report/:userName" element={<ViewReportUser />} />
+                  <Route path="/calibration-exceeded" element={<CalibrationExceeded />} />
+                  <Route path="/manage-user" element={<UsersLog />} />
+                  <Route path="/edit/:userId" element={<Edit />} />
+                  <Route path="/view-notification" element={<Viewnotification />} />
+                  <Route path="/edit-parameter/:userName" element={<EditParameter />} />
+                </Route>
+              )}
+
+              {/* User Routes */}
+              {userType === "user" && (
+                <Route path="/" element={<PrivateLayout />}>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/water" element={<Water />} />
+                  <Route path="/ambient-air" element={<Airambient />} />
+                  <Route path="/noise" element={<Noise />} />
+                  <Route path="/account" element={<Account />} />
+                 
+                  <Route path="/transactions" element={<Transcation />} /> {/* Assuming transaction-related routes */}
+                  <Route path="/view-report" element={<ViewReport />} />
+                  <Route path="/edit-report/:userName" element={<EditReport />} />
+                  <Route path="/download-IoT-Data" element={<DownloadData />} />
+                  <Route path="/quantity" element={<Quantity />} />
+                  <Route path="/energy" element={<Energy />} />
+                  <Route path="/support-analyser" element={<SupportAnalyser />} />
+                  <Route path="/view-report/:userName" element={<ViewReportUser />} />
 
 
 
-
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-      
-
-      
-
-      </Routes>
-     
+                </Route>
+              )}
+            </Routes>
+          </NotificationProvider>
+        </UserProvider>
+      </CalibrationProvider>
     </div>
   );
 }

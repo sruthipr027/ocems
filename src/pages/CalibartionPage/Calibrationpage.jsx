@@ -1,198 +1,309 @@
-import React from 'react'
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';  // Toastify styles
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateCalibrationData, updateTimeOfCalibrationAdded, addCalibration } from '../../redux/features/calibration/calibrationSlice';
+import { fetchUser } from '../../redux/features/user/userSlice';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import DashboardSam from '../Dashboard/DashboardSam';
 import Hedaer from '../Header/Hedaer';
 
-function Calibrationpage() {
+const Calibration = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { calibrationData, loading, error } = useSelector((state) => state.calibration);
+  const { userData } = useSelector((state) => state.user);
 
-  
-  const handlehome=()=>{
-      navigate('/')
+  // Fetch user data
+  useEffect(() => {
+    if (!userData) {
+      dispatch(fetchUser());
+    }
+  }, [dispatch, userData]);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    if (name === 'time') {
+      dispatch(updateTimeOfCalibrationAdded(value));
+    } else {
+      dispatch(updateCalibrationData({ [name]: value }));
+    }
+  };
+
+  const handleCancel = () => {
+    navigate('/view-calibration');
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    // Validation
+    if (!calibrationData.date) {
+      toast.warning('Please add the date', { position: 'top-center' });
+    } else if (!calibrationData.equipmentName) {
+      toast.warning('Please add the equipment Name', { position: 'top-center' });
+    } else if (!calibrationData.before) {
+      toast.warning('Please add the before', { position: 'top-center' });
+    } else if (!calibrationData.after) {
+      toast.warning('Please add the after', { position: 'top-center' });
+    } else if (!calibrationData.technician) {
+      toast.warning('Please add the technician', { position: 'top-center' });
+    } else {
+      try {
+        const calibrationDataToSend = {
+          ...calibrationData,
+          adminID: userData?.validUserOne?.userName || 'Unknown User',
+          adminName: userData?.validUserOne?.fname || 'Unknown Admin',
+        };
+        await dispatch(addCalibration(calibrationDataToSend));
+        toast.success('The Calibration was added successfully');
+        setTimeout(() => {
+          navigate('/view-calibration');
+        }, 500);
+      } catch (error) {
+        console.log(error);
+        toast.error('An error occurred. Please try again.');
+        setTimeout(() => {
+          navigate('/view-calibration');
+        }, 1000);
+      }
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
+
+  if (error) {
+    return <div>Error... {error}</div>;
+  }
+
   return (
     <div className="container-fluid">
-    <div className="row">
-        {/* Sidebar (hidden on mobile) */}
+      <div className="row">
         <div className="col-lg-3 d-none d-lg-block ">
-            <DashboardSam />
+          <DashboardSam />
         </div>
-        {/* Main content */}
-        <div className="col-lg-9 col-12 ">
-            <div className="row">
-                <div className="col-12">
-                    <Hedaer />
-                </div>
+        <div className="col-lg-9 col-12">
+          <div className="row">
+            <div className="col-12">
+              <Hedaer />
             </div>
-            <div>
-          <div className="row" style={{overflowX:'hidden'}}>
+          </div>
+          <div className="row" style={{ overflowX: 'hidden' }}>
             <div className="col-12 col-md-12 grid-margin">
-                <div className="col-12 d-flex justify-content-center align-items-center m-2 text-center" >
-                    
-                    <h1 className='text-center mt-5' style={{justifyContent:'center'}}>Calibration Added By</h1>
-                    
-                </div>
-                <div className="card m-1 ">
-                    <div className="card-body">
-                        <form className='m-5'>
-                            <div className="row">
-                                {/* Select Industry */}
-                                <div className="col-lg-6 col-md-6 mb-4">
-                                    <div className="form-group">
-                                        <label htmlFor="industry" className="form-label">User ID</label>
-                                        <input id="to-date" placeholder='User ID' className="form-control"  style={{ width: '100%', padding: '15px', borderRadius: '10px' }} />
+              <h1 className="text-center mt-5">Calibration Added By</h1>
+              <div className="card m-1">
+                <div className="card-body">
+                  <form onSubmit={handleSubmit} className="m-5">
+                    <div className="row">
+                      {/* User ID */}
+                      <div className="col-lg-6 col-md-6 mb-4">
+                        <div className="form-group">
+                          <label className="form-label">User ID</label>
+                          <input
+                            type="text"
+                            name="userName"
+                            value={userData?.validUserOne?.userName || ''}
+                            onChange={handleInputChange}
+                            placeholder="User ID"
+                            className="form-control"
+                            style={{ padding: '15px', borderRadius: '10px', border: 'none' }}
+                          />
+                        </div>
+                      </div>
 
-                                    </div>
-                                </div>
+                      {/* Date of Calibration Added */}
+                      <div className="col-lg-6 col-md-6 mb-4">
+                        <div className="form-group">
+                          <label className="form-label">Date of Calibration Added</label>
+                          <input
+                            type="date"
+                            name="dateOfCalibrationAdded"
+                            value={calibrationData?.dateOfCalibrationAdded || ''}
+                            onChange={handleInputChange}
+                            className="form-control"
+                            style={{ padding: '15px', borderRadius: '10px', border: 'none' }}
+                          />
+                        </div>
+                      </div>
 
-                                {/* Select Company */}
-                              
+                      {/* Time of Calibration Added */}
+                      <div className="col-lg-6 col-md-6 mb-4">
+                        <div className="form-group">
+                          <label className="form-label">Time of Calibration Added</label>
+                          <input
+                            type="text"
+                            name="timeOfCalibrationAdded"
+                            value={calibrationData?.timeOfCalibrationAdded || ''}
+                            onChange={handleInputChange}
+                            placeholder="Time"
+                            className="form-control"
+                            style={{ padding: '15px', borderRadius: '10px', border: 'none' }}
+                          />
+                        </div>
+                      </div>
 
-                                {/* From Date */}
-                                <div className="col-lg-6 col-md-6 mb-4">
-                                    <div className="form-group">
-                                        <label htmlFor="from-date" className="form-label">Date of calibration added</label>
-                                        <input id="from-date" className="form-control" type="date" style={{ width: '100%', padding: '15px', borderRadius: '10px' }} />
-                                    </div>
-                                </div>
-
-                                {/* To Date */}
-                                <div className="col-lg-6 col-md-6 mb-4">
-                                    <div className="form-group">
-                                        <label htmlFor="to-date" className="form-label">Time Of Calibration Added</label>
-                                        <input id="to-date" placeholder='Time' className="form-control"  style={{ width: '100%', padding: '15px', borderRadius: '10px' }} />
-                                    </div>
-                                </div>
-                                <div className="col-lg-6 col-md-6 mb-4">
-                                    <div className="form-group">
-                                        <label htmlFor="industry" className="form-label">User Name</label>
-                                        <input id="to-date" placeholder='Name' className="form-control"  style={{ width: '100%', padding: '15px', borderRadius: '10px' }} />
-
-                                    </div>
-                                </div>
-
-                                {/* Download Format */}
-                               
-                            </div>
-                        </form>
-                        <ToastContainer />
+                      {/* User Name */}
+                      <div className="col-lg-6 col-md-6 mb-4">
+                        <div className="form-group">
+                          <label className="form-label">User Name</label>
+                          <input
+                            type="text"
+                            name="fname"
+                            value={userData?.validUserOne?.fname || ''}
+                            onChange={handleInputChange}
+                            placeholder="User Name"
+                            className="form-control"
+                            style={{ padding: '15px', borderRadius: '10px', border: 'none' }}
+                          />
+                        </div>
+                      </div>
                     </div>
-                </div>
-                <div className="col-12 d-flex justify-content-center align-items-center m-2 text-center" >
-                    
-                    <h1 className='text-center mt-2' style={{justifyContent:'center'}}>Add Calibration Details</h1>
-                    
-                </div>
-                <div className="card m-1 ">
-                    <div className="card-body">
-                        <form className='m-5'>
-                            <div className="row">
-                                {/* Select Industry */}
-                                <div className="col-lg-6 col-md-6 mb-4">
-                                    <div className="form-group">
-                                        <label htmlFor="industry" className="form-label">User ID</label>
-                                        <input id="to-date" placeholder='User ID' className="form-control"  style={{ width: '100%', padding: '15px', borderRadius: '10px' }} />
 
-                                    </div>
-                                </div>
+                    <div className="row">
+                      <h1 className="text-center">Add Calibration Details</h1>
+                      {/* Model Name */}
 
-                                {/* Select Company */}
-                              
 
-                                {/* From Date */}
-                                <div className="col-lg-6 col-md-6 mb-4">
-                                    <div className="form-group">
-                                        <label htmlFor="from-date" className="form-label">Date of calibration added</label>
-                                        <input id="from-date" className="form-control" type="date" style={{ width: '100%', padding: '15px', borderRadius: '10px' }} />
-                                    </div>
-                                </div>
+                    {/*   <div className="col-lg-6 col-md-6 mb-4">
+                            <label htmlFor="exampleFormControlInput5">User ID</label>
+                            <input type="text" className="input-field" id="exampleFormControlInput5" placeholder="User ID" name='userName' value= {calibrationData.userName}  onChange={handleInputChange}
+                              style={{ padding: '15px', borderRadius: '10px', border: 'none' }}
+                            /> */}
+                            
 
-                                {/* To Date */}
-                                
-                                <div className="col-lg-6 col-md-6 mb-4">
-                                    <div className="form-group">
-                                        <label htmlFor="industry" className="form-label">Model Name</label>
-                                        <input id="industry" placeholder='Time' className="form-control"  style={{ width: '100%', padding: '15px', borderRadius: '10px' }} />
+                         {/*  </div> */}
+                         <div className="col-lg-6 col-md-6 mb-4">
+                        <div className="form-group">
+                          <label className="form-label">User ID</label>
+                          <input
+                            type="text"
+                            name="userName"
+                            value= {calibrationData.userName}
+                            onChange={handleInputChange}
+                            placeholder="User ID"
+                            className="form-control"
+                            style={{ padding: '15px', borderRadius: '10px', border: 'none' }}
+                          />
+                        </div>
+                      </div>
 
-                                    </div>
-                                </div>
 
-                                
-                               
-                            </div>
-                        </form>
-                        <ToastContainer />
+
+                      <div className="col-lg-6 col-md-6 mb-4">
+                        <div className="form-group">
+                          <label className="form-label">Model Name</label>
+                          <input
+                            type="text"
+                            name="equipmentName"
+                            value={calibrationData?.equipmentName || ''}
+                            onChange={handleInputChange}
+                            placeholder="Model Name"
+                            className="form-control"
+                            style={{ padding: '15px', borderRadius: '10px', border: 'none' }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Date */}
+                      <div className="col-lg-6 col-md-6 mb-4">
+                        <div className="form-group">
+                          <label className="form-label">Date of Calibration</label>
+                          <input
+                            type="date"
+                            name="date"
+                            value={calibrationData?.date || ''}
+                            onChange={handleInputChange}
+                            className="form-control"
+                            style={{ padding: '15px', borderRadius: '10px', border: 'none' }}
+                          />
+                        </div>
+                      </div>
+<h1 className='text-center'>Results</h1>
+                      {/* Before */}
+                      <div className="col-lg-6 col-md-6 mb-4">
+                        <div className="form-group">
+                          <label className="form-label">Before</label>
+                          <textarea
+                            name="before"
+                            value={calibrationData?.before || ''}
+                            onChange={handleInputChange}
+                            placeholder="Before"
+                            className="form-control"
+                            style={{ padding: '15px', borderRadius: '10px', border: 'none' }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* After */}
+                      <div className="col-lg-6 col-md-6 mb-4">
+                        <div className="form-group">
+                          <label className="form-label">After</label>
+                          <textarea
+                            name="after"
+                            value={calibrationData?.after || ''}
+                            onChange={handleInputChange}
+                            placeholder="After"
+                            className="form-control"
+                            style={{ padding: '15px', borderRadius: '10px', border: 'none' }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Technician */}
+                      <div className="col-lg-6 col-md-6 mb-4">
+                        <div className="form-group">
+                          <label className="form-label">Technician</label>
+                          <input
+                            type="text"
+                            name="technician"
+                            value={calibrationData?.technician || ''}
+                            onChange={handleInputChange}
+                            placeholder="Technician Name"
+                            className="form-control"
+                            style={{ padding: '15px', borderRadius: '10px', border: 'none' }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Notes */}
+                      <div className="col-lg-6 col-md-6 mb-4">
+                        <div className="form-group">
+                          <label className="form-label">Notes</label>
+                          <textarea
+                            name="notes"
+                            value={calibrationData?.notes || ''}
+                            onChange={handleInputChange}
+                            placeholder="Notes"
+                            className="form-control"
+                            style={{ padding: '15px', borderRadius: '10px', border: 'none' }}
+                          />
+                        </div>
+                      </div>
                     </div>
+
+                    {/* Submit and Cancel Buttons */}
+                    <button type="submit" className="btn btn-success" style={{ color: 'white' }}>
+                      Add Calibration
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-danger ms-1"
+                      onClick={handleCancel}
+                      style={{ color: 'white' }}
+                    >
+                      Cancel
+                    </button>
+                    <ToastContainer position="top-right" autoClose={3000} />
+                  </form>
                 </div>
-                <div className="col-12 d-flex justify-content-center align-items-center " >
-                    
-                    <h1 className='text-center mt-2' style={{justifyContent:'center'}}>Results</h1>
-                    
-                </div>
-                <div className="card m-1">
-                    <div className="card-body">
-                        <form className='m-5'>
-                            <div className="row">
-                                {/* Select Industry */}
-                                <div className="col-lg-6 col-md-6 mb-4">
-                                    <div className="form-group">
-                                        <label htmlFor="industry" className="form-label">Before</label>
-                                        <input id="industry" placeholder='Before' className="form-control"  style={{ width: '100%', padding: '15px', borderRadius: '10px' }} />
-                                           
-                                           
-                                        
-                                    </div>
-                                </div>
-
-                                {/* Select Company */}
-                              
-
-                                {/* From Date */}
-                                <div className="col-lg-6 col-md-6 mb-4">
-                                    <div className="form-group">
-                                        <label htmlFor="after" className="form-label">After</label>
-                                        <input id="after" className="form-control" type="date" style={{ width: '100%', padding: '15px', borderRadius: '10px' }} />
-                                    </div>
-                                </div>
-
-                                {/* To Date */}
-                                <div className="col-lg-6 col-md-6 mb-4">
-                                    <div className="form-group">
-                                        <label htmlFor="to-date" className="form-label">Technician</label>
-                                        <input id="to-date" placeholder='Technician' className="form-control"  style={{ width: '100%', padding: '15px', borderRadius: '10px' }} />
-                                    </div>
-                                </div>
-                                <div className="col-lg-6 col-md-6 mb-4">
-                                    <div className="form-group">
-                                        <label htmlFor="industry" className="form-label">Notes</label>
-                                        <input id="to-date" placeholder='Notes' className="form-control"  style={{ width: '100%', padding: '15px', borderRadius: '10px' }} />
-
-                                    </div>
-                                </div>
-
-                                {/* Download Format */}
-                               
-                            </div>
-                            <button type="submit" className="btn" style={{backgroundColor:'#236a80' , color:'white'}}>Add Calibration</button>
-                            <button type="submit" className="btn btn-danger ms-1 " style={{ color:'white'}}>Cancel</button>
-
-
-                        </form>
-                        <ToastContainer />
-                    </div>
-                </div>
-                
+              </div>
             </div>
-           
+          </div>
         </div>
-       
       </div>
-        </div>
     </div>
-</div>
-  )
-}
+  );
+};
 
-export default Calibrationpage
+export default Calibration;

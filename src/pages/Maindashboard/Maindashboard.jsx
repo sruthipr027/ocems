@@ -5,11 +5,13 @@ import Hedaer from '../Header/Hedaer';
 import './maindashboard.css';
 import { Button } from 'react-bootstrap';
 import filter from '../../assests/images/filter-removebg-preview.png';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
+import { useSelector } from 'react-redux';
 
 function Maindashboard() {
   const navigate = useNavigate();
+  const { userType } = useSelector((state) => state.user);
 
   const handleCalibration = () => {
     navigate('/calibartion');
@@ -29,10 +31,11 @@ function Maindashboard() {
   
 
   return (
-    <div className='maindashboard-container d-flex'>
+  <div>
+      <div className='maindashboard d-flex mt-3'>
       <div className='flex-grow-1 content'>
-        <Hedaer />
-        <div style={{ position: 'relative', marginBottom: '1rem' }} className='w-100 px-1 homeSearch1'>
+        
+        <div style={{ position: 'relative', marginBottom: '1rem' }} className='w-75 px-1 homeSearch2'>
           <input 
             type="text" 
             placeholder="Search..." 
@@ -57,7 +60,7 @@ function Maindashboard() {
           ></i>
         </div>
         
-        <div className='me-1'>
+        <div className='me-1 mt-5'>
           <Navbar expand="lg" className="navbg p-3 shadow" style={{ borderRadius: '10px'}}>
             <div className='d-flex justify-content-between gap-2 w-100'>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -67,7 +70,9 @@ function Maindashboard() {
                   <Nav.Link href="/ambient">Ambient Air</Nav.Link>
                   <Nav.Link href="/noise">Noise</Nav.Link>
                   <Nav.Link href="/quantity">Quantity</Nav.Link>
-                  <Nav.Link href="/energy">Energy</Nav.Link>
+
+                
+                                 <Nav.Link href="/energy">Energy</Nav.Link>
                   
                   <Dropdown>
   <Dropdown.Toggle 
@@ -134,7 +139,8 @@ function Maindashboard() {
               </div>
             </div>
           </Navbar>
-          
+          {userType !== 'user' && (
+
           <div className='flex-md-row  mt-3 button-section'>
             <div className='d-flex  flex-md-row justify-content-around align-items-center '>
             <Dropdown className='m-2 buttonbg rounded'>
@@ -147,8 +153,8 @@ function Maindashboard() {
   </Dropdown.Toggle>
 
   <Dropdown.Menu>
-    <Dropdown.Item href="/add-calibartion">Add Calibration</Dropdown.Item>
-    <Dropdown.Item href="/view-calibartion">View Calibration</Dropdown.Item>
+    <Dropdown.Item href="/add-calibration">Add Calibration</Dropdown.Item>
+    <Dropdown.Item href="/view-calibration">View Calibration</Dropdown.Item>
   </Dropdown.Menu>
 </Dropdown>
 
@@ -173,9 +179,12 @@ function Maindashboard() {
               </Button>
             </div>
           </div>
+           )}
         </div>
+     
       </div>
     </div>
+  </div>
   );
 }
 

@@ -16,3 +16,44 @@
 .flight-schedule-chart {
     height: 200px; /* Controls the height of the chart */
 }
+/* Align the tabs inside the graph container */
+.tabbed-chart-container {
+    position: relative;
+    padding-top: 15px; /* Adjust padding as needed */
+}
+
+.chart-tabs {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+}
+
+.flight-schedule-chart {
+    padding-top: 50px; /* Make room for the tabs */
+}
+/* watergraph.css */
+
+/* .chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.navchart .nav-link {
+    cursor: pointer;
+    color: #007bff;
+}
+
+.navchart .nav-link.active {
+    color: #fff;
+    background-color: #007bff;
+}
+
+.graph-content {
+    margin-top: 20px;
+}
+ */

@@ -10,17 +10,11 @@
   width: 200px;
 }
 @media only screen and (max-width: 1000px) {
-  .homeSearch1{
+  .homeSearch2{
     display: none;
   }
 }
-@media only screen and (max-width: 1000px) {
-  .homeSearch2{
-    display: block;
-   
 
-  }
-}
 .button-section{
   display: flex;
   justify-content: space-between;
@@ -72,9 +66,9 @@
 }
 
 /* Main Dashboard Layout */
-.maindashboard-container {
+.maindashboard {
   display: flex;
-  overflow-x: hidden;
+ /*  overflow-x: hidden; */
 }
 
 .sidebar {
@@ -130,7 +124,7 @@
 
 
 .dropdown-menu {
-  display: block; /* Ensure dropdown is displayed */
+  /* display: block;  *//* Ensure dropdown is displayed */
   position: absolute;
  
   top: 100%;

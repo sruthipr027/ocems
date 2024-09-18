@@ -1,4 +1,4 @@
-.nav {
+.navdash {
     position: fixed;
     top: 20px;
     left: 20px;
@@ -11,7 +11,7 @@
     overflow-x: hidden;
 }
 
-.nav ul {
+.navdash ul {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -20,8 +20,8 @@
     padding-top: 75px;
 }
 
-.nav li:hover a,
-.nav li:hover a span {
+.navdash li:hover a,
+.navdash li:hover a span {
     color: black; 
 }
 

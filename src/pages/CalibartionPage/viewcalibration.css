@@ -55,7 +55,7 @@
 }
 
 .custom-width {
-    min-width: 150px; /* Adjust the minimum width as needed */
+    min-width: 100px; /* Adjust the minimum width as needed */
     white-space: nowrap; /* Prevents text from wrapping */
 }
 
