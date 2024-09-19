@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { API_URL } from '../../utils/apiConfig';
 import DashboardSam from '../Dashboard/DashboardSam'; // Assuming Sidebar
 import Hedaer from '../Header/Hedaer'; // Assuming Header
+import HeaderSim from '../Header/HeaderSim';
 
 const ViewReportUser = () => {
   const { userName } = useParams(); // Get the userName from the route parameters
@@ -25,7 +26,7 @@ const ViewReportUser = () => {
 
   // Show a loading indicator while the report is being fetched
   if (!report) {
-    return <div>Loading...</div>;
+    return <div>Loading... </div>;
   }
 
   return (
@@ -33,14 +34,14 @@ const ViewReportUser = () => {
       <div className="row">
         {/* Sidebar */}
         <div className="col-lg-3 d-none d-lg-block">
-          <DashboardSam />
+         <DashboardSam/>
         </div>
 
         {/* Main content */}
         <div className="col-lg-9 col-12">
           <div className="row">
             <div className="col-12">
-              <Hedaer />
+             <HeaderSim/>
             </div>
           </div>
 
@@ -66,17 +67,17 @@ const ViewReportUser = () => {
               <div className="card m-1">
                 <div className="card-body">
                   <h1 className='text-center mt-3'>Report Details for {userName}</h1>
-                  <div className="m-5 p-5">
+                  <div className="m-3 p-3">
                     <div className="row">
                       {/* From Date */}
                       <div className="col-lg-6 mb-4">
                         <div className="form-group">
-                          <label className='mb-2'><strong>From Date : </strong>{ report.fromDate}</label>
-                          <label className='mb-2'><strong>To Date : </strong>{ report.toDate}</label>
-                          <label className='mb-2'><strong>Username : </strong>{report.userName}</label>
-                          <label className='mb-2'><strong>Company Name : </strong>{report.companyName}</label>
-                          <label className='mb-2'><strong>Industry Type : </strong>{report.industryType}</label>
-                          <label className='mb-2'><strong>Engineer Name : </strong>{report.engineerName}</label>
+                          <label className='mb-2'><strong>From Date : </strong>{ report.fromDate}</label> <br />
+                          <label className='mb-2'><strong>To Date : </strong>{ report.toDate}</label> <br />
+                          <label className='mb-2'><strong>Username : </strong>{report.userName}</label> <br />
+                          <label className='mb-2'><strong>Company Name : </strong>{report.companyName}</label> <br />
+                          <label className='mb-2'><strong>Industry Type : </strong>{report.industryType}</label> <br />
+                          <label className='mb-2'><strong>Engineer Name : </strong>{report.engineerName}</label> <br />
                           <label className='mb-2'><strong>Verified/Declined : </strong>{report.reportApproved ? 'Verified' : 'Declined'}</label>
 
                         </div>

@@ -9,12 +9,12 @@ const Layout = () => {
  
   return (
     <div className="container-fluid" >
-      <div className="row bg-light" >
-        {/* Sidebar (hidden on mobile) */}
+    {/*   <div className="row bg-light" >
+       
         <div className="col-lg-3 d-none d-lg-block ">
           <DashboardSam />
         </div>
-        {/* Main content */}
+      
         <div className="col-lg-9 col-12 ">
           <div className="row">
             <div className="col-12">
@@ -23,7 +23,7 @@ const Layout = () => {
           </div>
       
         </div>
-      </div>
+      </div>  */}
     </div>
   );
 };

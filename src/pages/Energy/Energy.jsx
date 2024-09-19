@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import DashboardSam from '../Dashboard/DashboardSam';
 import { Chart, registerables } from 'chart.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchIotDataByUserName } from "../../redux/features/iotData/iotDataSlice";
-
-import { fetchAverageDataByUserName, fetchDifferenceDataByUserName } from "../../redux/features/iotData/iotDataSlice";
+import { fetchIotDataByUserName, fetchAverageDataByUserName, fetchDifferenceDataByUserName } from "../../redux/features/iotData/iotDataSlice";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useOutletContext } from 'react-router-dom';
-
 import Hedaer from '../Header/Hedaer';
+import Layout from '../Layout/Layout';
+import { Bar } from 'recharts';
+import { CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, BarChart } from 'recharts';
 
 Chart.register(...registerables);
 
@@ -18,51 +18,38 @@ function Energy() {
   const outletContext = useOutletContext() || {};
 
   const { userId } = useSelector((state) => state.selectedUser); 
-  const { searchTerm = '', searchStatus = '', handleSearch = () => {}, isSearchTriggered = false } = outletContext
+  const { searchTerm = '', searchStatus = '', handleSearch = () => {}, isSearchTriggered = false } = outletContext;
   const { userData, userType } = useSelector((state) => state.user);
-  const { averageData, differenceData } = useSelector((state) => state.iotData);
+  const { averageData, differenceData, loading, error } = useSelector((state) => state.iotData);
   const [interval, setInterval] = useState("year");
-  const [loading, setLoading] = useState(false);
   const [searchResult, setSearchResult] = useState(null);
   const [searchError, setSearchError] = useState("");
   const [currentUserName, setCurrentUserName] = useState("KSPCB001");
   const [companyName, setCompanyName] = useState("");
 
   const fetchData = async (userName) => {
-    setLoading(true);
+    setSearchError("");
     try {
       const result = await dispatch(fetchIotDataByUserName(userName)).unwrap();
       setSearchResult(result);
       setCompanyName(result?.companyName || "Unknown Company");
-      setSearchError("");
     } catch (err) {
       setSearchResult(null);
       setCompanyName("Unknown Company");
       setSearchError(err.message || 'No Result found for this userID');
-    } finally {
-      setLoading(false);
     }
   };
+
+  // Fetch initial data
   useEffect(() => {
-    if (userId) {
-      dispatch(fetchIotDataByUserName(userId));
-    }
-  }, [userId, dispatch]);
-  useEffect(() => {
-    // Use selected userId from Redux or default to the current one
     if (userId) {
       fetchData(userId);
     } else {
       fetchData(currentUserName);
     }
-  }, [userId, currentUserName, dispatch]);
-  useEffect(() => {
-    if (searchTerm) {
-      fetchData(searchTerm);
-    } else {
-      fetchData(currentUserName);
-    }
-  }, [searchTerm, currentUserName, dispatch]);
+  }, [userId, currentUserName, searchTerm, dispatch]);
+
+  // Fetch energy-related data (average and difference)
   useEffect(() => {
     const fetchData = async () => {
       if (!userData || userType !== 'user') return;
@@ -83,107 +70,144 @@ function Energy() {
     fetchData();
   }, [userData, userType, interval, dispatch]);
 
+  // Handle interval changes
   const handleIntervalChange = (newInterval) => {
     setInterval(newInterval);
+    fetchData(currentUserName);
   };
 
-  useEffect(() => {
-    const ctx = document.getElementById('quantityChart').getContext('2d');
-    const newChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: averageData.map(data => new Date(data.timestamp).toLocaleDateString()),
-        datasets: [{
-          label: 'FL - STP Incomer Energy Consumption, kWh',
-          data: averageData.map(data => data.energy),
-          backgroundColor: '#236a80',
-        }],
-      },
-      options: {
-        responsive: true,
-        scales: {
-          x: {
-            beginAtZero: true,
-            grid: {
-              display: false,
-            }
-          },
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: '#e0e0e0',
-            }
-          }
-        },
-        plugins: {
-          legend: {
-            display: true,
-            position: 'top',
-          },
-          tooltip: {
-            enabled: true,
-          }
-        }
-      }
-    });
+  // Format X-axis based on the interval
+  const formatXAxis = (tickItem) => {
+    const date = new Date(tickItem);
+    if (interval === "hour") {
+      return date.toLocaleTimeString();
+    } else if (interval === "day") {
+      return date.toLocaleDateString('en-US', { weekday: 'short' });
+    } else if (interval === "week" || interval === "sixmonth") {
+      return date.toLocaleDateString();
+    } else if (interval === "month") {
+      return date.toLocaleString('en-US', { month: 'short' });
+    } else if (interval === "year") {
+      return date.getFullYear();
+    }
+    return tickItem;
+  };
 
-    return () => {
-      newChart.destroy();
-    };
-  }, [averageData]);
+  const getDatesHeaders = () => {
+    if (!differenceData || differenceData.length === 0) return [];
+    return ['Date']; // Assuming these are the date headers
+  };
 
   return (
     <div className="container-fluid">
-     {/*  <DashboardSam /> */}
-      <Hedaer/>
-      <h2 className='text-center'>Energy Dashboard</h2>
-      <ToastContainer />
-
-      <div className="row" style={{ overflowX: 'hidden' }}>
-        {/* Table Card */}
-        <div className="col-12 col-md-12 grid-margin">
-          <div className="cardgraph mb-3 mt-5" style={{ padding: '20px', backgroundColor: '#f9fafc', borderRadius: '10px' }}>
-            <div className="card-body " style={{ borderRadius: '10px' }}>
-              <h5 className="card-title">Parameter Data</h5>
-              <div style={{ overflowX: 'auto' }}>
-                <table className="table table-bordered" style={{ background: '#f7fafc', margin: '0', padding: '15px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-                  <thead style={{ background: 'linear-gradient(-90deg, #8ab9c8,#f2f7f9)' }}>
-                    <tr>
-                      <th>Parameter</th>
-                      {averageData.map((data, index) => (
-                        <th key={index}>{new Date(data.timestamp).toLocaleDateString()}</th>
-                      ))}
-                      <th>Initial Energy</th>
-                      <th>Final Energy</th>
-                      <th>Energy Difference</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {differenceData.map((data, index) => (
-                      <tr key={index}>
-                        <td>FL-Inlet raw sewage, KLD</td>
-                        {averageData.map((avg, avgIndex) => (
-                          <td key={avgIndex}>{avg.energy}</td>
-                        ))}
-                        <td>{data.initialEnergy}</td>
-                        <td>{data.finalEnergy}</td>
-                        <td>{data.energyDifference}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+      <div className="row">
+        {/* Sidebar */}
+        <div className="col-lg-3 d-none d-lg-block ">
+          <DashboardSam />
         </div>
         
-        {/* Graph Card */}
-        <div className="col-12 col-md-12 grid-margin">
-          <div className="cardgraph mb-3" style={{ padding: '20px' }}>
-            <div className="card-body">
-              <h5 className="card-title">Total FL Sewage Graph</h5>
-              <canvas id="quantityChart" width="400" height="200"></canvas>
+        {/* Main content */}
+        <div className="col-lg-9 col-12">
+          <div className="row">
+            <div className="col-12">
+              <Hedaer />
             </div>
+          </div>
+
+          <div className="content-wrapper">
+            <div className="row page-title-header">
+              <div className="col-12">
+                <div className="page-header">
+                  <h4 className="page-title">Energy Dashboard</h4>
+                </div>
+              </div>
+            </div>
+
+            <div className="card mb-4">
+              <div className="card-body">
+                <h1>{searchResult ? `User: ${searchResult}` : searchError}</h1>
+              </div>
+            </div>
+
+            <div className="card mb-4">
+              <div className="card-body">
+                <div className="row mt-5">
+                  <div className="col-md-12">
+                    <h2>Energy Consumption</h2>
+                    <div className="table-responsive mt-3">
+                      <table className="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Sl.No</th>
+                            <th>Parameter</th>
+                            {getDatesHeaders().map((date, index) => (
+                              <th key={index}>{date}</th>
+                            ))}
+                            <th>Initial Energy</th>
+                            <th>Final Energy</th>
+                            <th>Energy Difference</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {differenceData.map((data, index) => (
+                            <React.Fragment key={index}>
+                              <tr>
+                                <td>{index + 1}</td>
+                                <td>FL-STP Incomer Energy Consumption, kWh</td>
+                                <td>{data.date}<br/>{data.day}</td>
+                                <td>{data.initialEnergy}</td>
+                                <td>{data.finalEnergy}</td>
+                                <td>{data.energyDifference}</td>
+                              </tr>
+                            </React.Fragment>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <ToastContainer />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="card mt-4 mb-5">
+              <div className="card-body">
+                <div className="row mt-5">
+                  <div className="col-md-12">
+                    <h2 className="m-3">Total Energy Consumption Graph</h2>
+                    <div className="btn-group" role="group">
+                      <button type="button" className="btn btn-primary" onClick={() => handleIntervalChange('hour')}>Hour</button>
+                      <button type="button" className="btn btn-primary" onClick={() => handleIntervalChange('day')}>Day</button>
+                      <button type="button" className="btn btn-primary" onClick={() => handleIntervalChange('week')}>Week</button>
+                      <button type="button" className="btn btn-primary" onClick={() => handleIntervalChange('month')}>Month</button>
+                      <button type="button" className="btn btn-primary" onClick={() => handleIntervalChange('sixmonth')}>Six Months</button>
+                      <button type="button" className="btn btn-primary" onClick={() => handleIntervalChange('year')}>Year</button>
+                    </div>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <BarChart data={averageData}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="timestamp" tickFormatter={formatXAxis} />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="energy" fill="#82ca9d" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer className="footer">
+              <div className="container-fluid clearfix">
+                <span className="text-muted d-block text-center text-sm-left d-sm-inline-block">
+                  AquaBox Control and Monitor System
+                </span>
+                <span className="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+                  © <a href="" target="_blank">EnviRobotics</a> 2022
+                </span>
+              </div>
+            </footer>
           </div>
         </div>
       </div>

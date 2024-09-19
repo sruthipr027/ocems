@@ -8,6 +8,7 @@ import Hedaer from '../Header/Hedaer';
 import FooterM from '../FooterMain/FooterM';
 import axios from 'axios';
 import { API_URL } from '../../utils/apiConfig'; // API Configuration
+import HeaderSim from '../Header/HeaderSim';
 
 const ReportCheck = () => {
     const location = useLocation();
@@ -65,7 +66,7 @@ const ReportCheck = () => {
                 window.confirm(`Are you sure you want to ${reportApproved ? 'approve' : 'deny'} the report?`);
                 toast.success(`Calibration exceed report ${reportApproved ? 'approved' : 'denied'}`);
                 if (!reportApproved) {
-                    setTimeout(() => { navigate("/users-log"); }, 1000);
+                    setTimeout(() => { navigate("/view-report"); }, 1000);
                 }
             } else {
                 toast.error('Error creating report');
@@ -84,13 +85,13 @@ const ReportCheck = () => {
             <div className="row">
                 {/* Sidebar */}
                 <div className="col-lg-3 d-none d-lg-block">
-                    <DashboardSam />
+                   <DashboardSam/>
                 </div>
                 {/* Main content */}
                 <div className="col-lg-9 col-12">
                     <div className="row">
                         <div className="col-12">
-                            <Hedaer />
+                          <HeaderSim/>
                         </div>
                     </div>
                     <div>

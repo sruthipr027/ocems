@@ -21,12 +21,11 @@ function Hedaer() {
   const [searchTerm, setSearchTerm] = useState('');
   const [notifications, setNotifications] = useState([]);
   const [isDropdownOpenNotification, setIsDropdownOpenNotification] = useState(false);
-  const [userName, setUserName] = useState(""); 
+  const [userName, setUserName] = useState(""); // State for the selected user name
   const [users, setUsers] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-   // Add state to manage dropdown open/close
-   const selectedUserId = useSelector((state) => state.selectedUser.userId);
+  const selectedUserId = useSelector((state) => state.selectedUser.userId);
   const navigate = useNavigate();
   const { userData } = useSelector((state) => state.user);
 
@@ -87,12 +86,14 @@ function Hedaer() {
     fetchNotifications();
   }, [userData]);
 
-  const handleUserSelect = (selectedUserId) => {
-    setUserName(selectedUserId);  // Set the selected user's name
-    dispatch(setSelectedUser(selectedUserId));  // Dispatch the selected user to global state
-    setIsDropdownOpen(false);  // Close the dropdown after user selection
+  const handleUserSelect = (userId) => {
+    sessionStorage.setItem('selectedUserId', userId); // Save selected userId in sessionStorage
+    dispatch(setSelectedUser(userId));  // Optionally, store in Redux as well
+    setUserName(userId);  // Update state to reflect selected user name
   };
-  
+
+  const savedUserId = sessionStorage.getItem('selectedUserId');
+  console.log(savedUserId);  // Outputs the stored userId
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown visibility
@@ -112,7 +113,6 @@ function Hedaer() {
               <span className='text-dark'><b>{userData?.validUserOne?.userName || 'Admin Developer'}</b></span>
               <button className='btn btn-success ms-2'>online</button>
             </Navbar.Brand>
-          
 
             <div className='d-flex'>
               <div className="d-flex align-items-center icons">
@@ -138,8 +138,7 @@ function Hedaer() {
                     <i className="fa-solid fa-user"></i>
                   </Dropdown.Toggle>
                   <Dropdown.Menu align="end">
-                  <Dropdown.Item><img src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_640.png" width={'100px'}></img></Dropdown.Item>
-
+                    <Dropdown.Item><img src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_640.png" width={'100px'} alt="User Icon"></img></Dropdown.Item>
                     <Dropdown.Item>{userData?.validUserOne?.userName || 'Admin-Developer'}</Dropdown.Item>
                     <Dropdown.Item onClick={handleSignOut}>Sign Out</Dropdown.Item>
                   </Dropdown.Menu>
@@ -150,17 +149,15 @@ function Hedaer() {
           </div>
         </Navbar>
 
-      
         {userData?.validUserOne?.userType !== 'user' && (
-          <div className="ms-0">
+          <div className="ms-0 mb-3">
             <div className="mt-4 col-lg-12">
               <Dropdown show={isDropdownOpen} onToggle={toggleDropdown}>
-                <Dropdown.Toggle  id="dropdown-basic" style={{backgroundColor:'#236a80' , outline:'none' , border:'none'}}>
+                <Dropdown.Toggle id="dropdown-basic" style={{backgroundColor:'#236a80' , outline:'none' , border:'none'}}>
                   {userName ? `Selected: ${userName}` : 'Select User'}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu style={{ maxHeight: '200px', overflowY: 'scroll' }}>
-                 
                   <input
                     type="text"
                     placeholder="Search user..."
@@ -169,7 +166,6 @@ function Hedaer() {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
-
                 
                   {filteredUsers.length > 0 ? (
                     filteredUsers.slice(0, 4).map((user, index) => (
@@ -190,9 +186,9 @@ function Hedaer() {
               </Dropdown>
             </div>
           </div>
-        )} 
+        )}
 
-<Outlet context={{ searchTerm: userName, isSearchTriggered: true }} />
+        <Outlet context={{ searchTerm: userName, isSearchTriggered: true }} />
         <Outlet />
 
         <Offcanvas show={show} onHide={handleClose} className="full-screen-offcanvas">

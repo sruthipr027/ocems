@@ -101,12 +101,15 @@ const Report = () => {
     <div className="container-fluid">
     <div className="row" style={{ backgroundColor: 'white' }}>
       {/* Sidebar (hidden on mobile) */}
+      <div className="col-lg-3 d-none d-lg-block ">
+                    <DashboardSam />
+                </div>
     
       {/* Main content */}
-      <div className="col-lg-12 col-12 ">
+      <div className="col-lg-9 col-12 ">
         <div className="row">
           <div className="col-12">
-          <Layout/>
+          <Hedaer/>
           </div>
         </div>
 
@@ -117,7 +120,7 @@ const Report = () => {
     </div>
   </div>
 
-    /*  */
+    
     <div className="container-fluid">
       <div className="row">
        
@@ -126,11 +129,7 @@ const Report = () => {
         </div>
      
         <div className="col-lg-9 col-12">
-          <div className="row">
-            <div className="col-12">
-              
-            </div>
-          </div>
+         
           <div className="row">
             <div className="col-12 col-md-12 grid-margin">
               <div className="card m-1">
@@ -237,7 +236,7 @@ const Report = () => {
                       </div>
 
                     </div>
-                    <button type="submit" className="btn btn-primary mb-2 mt-2">Check and Validate</button>
+                    <button type="submit" className="btn  mb-2 mt-2" style={{backgroundColor:'green' , border:'none' , color:'white'}}>Check and Validate</button>
                   </form>
 
                  

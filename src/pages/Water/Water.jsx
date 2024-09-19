@@ -11,6 +11,7 @@ import { useOutletContext } from 'react-router-dom';
 import './water.css';
 import waterDrop from '../../assests/images/water.png';
 import Layout from "../Layout/Layout";
+import Hedaer from "../Header/Hedaer";
 
 const Water = () => {
   // Use useOutletContext if available, otherwise set defaults
@@ -64,6 +65,13 @@ const Water = () => {
     }
   };
   useEffect(() => {
+    if (userData?.validUserOne?.userType === 'user') {
+      fetchData(userId); // Fetch data only for the current user if userType is 'user'
+    } else if (userId) {
+      dispatch(fetchIotDataByUserName(userId)); // For other userTypes, fetch data normally
+    }
+  }, [userId, dispatch]);
+  useEffect(() => {
     if (userId) {
       dispatch(fetchIotDataByUserName(userId));
     }
@@ -80,6 +88,7 @@ const Water = () => {
   useEffect(() => {
     if (searchTerm) {
       fetchData(searchTerm);
+     
     } else {
       fetchData(currentUserName);
     }
@@ -126,13 +135,14 @@ const Water = () => {
 <div>
 <div className="container-fluid">
     <div className="row" >
-      {/* Sidebar (hidden on mobile) */}
-    
-      {/* Main content */}
-      <div className="col-lg-12 col-12 ">
+    <div className="col-lg-3 d-none d-lg-block ">
+                    <DashboardSam />
+                </div>
+   
+      <div className="col-lg-9 col-12 ">
         <div className="row">
           <div className="col-12">
-         
+          <Hedaer />
           </div>
         </div>
 
@@ -145,9 +155,9 @@ const Water = () => {
 
   <div className="container-fluid">
       <div className="row">
-       
+     
         <div className="col-lg-3 d-none d-lg-block">
-         
+       
         </div>
      
         <div className="col-lg-9 col-12">
@@ -157,47 +167,7 @@ const Water = () => {
             </div>
           </div>
           <Maindashboard/>
-         {/*  <div className="row">
-          <div className='d-flex justify-content-between prevnext mt-5 ps-5 pe-5'>
-            <div>
-              <button onClick={handlePrevUser} disabled={loading} className='btn btn-outline-dark'>
-                <i className="fa-solid fa-arrow-left me-1"></i>Prev
-              </button>
-            </div>
-            <h1 className='text-center'>Water Dashboard</h1>
-            <div>
-              <button onClick={handleNextUser} disabled={loading} className='btn btn-outline-dark'>
-                Next <i className="fa-solid fa-arrow-right"></i>
-              </button>
-            </div>
-
-            <div><h5 className='d-flex justify-content-end me-5 mt-3'>
-              <b>Analyser Health :</b> 
-              <span className={searchResult?.validationStatus ? 'text-success' : 'text-danger'}>{searchResult?.validationStatus ? 'Good' : 'Problem'}</span></h5>
-            </div>
-            {loading && (
-            <div className="spinner-container">
-              <Oval
-                height={40}
-                width={40}
-                color="#236A80"
-                ariaLabel="Fetching details"
-                secondaryColor="#e0e0e0"
-                strokeWidth={2}
-                strokeWidthSecondary={2}
-              />
-            </div>
-          )}
-
-          {!loading && searchError && (
-            <div className="card mb-4">
-              <div className="card-body">
-                <h1>{searchError}</h1>
-              </div>
-            </div>
-          )}
-          </div>
-          </div>  */}
+        
  <div className="container-fluid water">
       <div className="row">
         

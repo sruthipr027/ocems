@@ -80,20 +80,22 @@ function App() {
       <CalibrationProvider>
         <UserProvider>
           <NotificationProvider>
-            <PublicLayout/>
+         
             <Routes>
-              <Route path="/" element={<PublicLayout />}>
+             
                 <Route path="/" element={<Log />} />
                 <Route path="/reset-password" element={<Reset />} />
                 <Route path="/reset" element={<ResetEmail />} />
                 <Route path='/download-data' element={<Download/>}></Route>
-              </Route>
+             
 
               {/* Admin Routes */}
+             
               {userType === "admin" && (
                            
 
                 <Route path='/' element={<PrivateLayout />}>
+                  
 
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/layout" element={<Layout />} />
@@ -136,7 +138,7 @@ function App() {
                 <Route path="/" element={<PrivateLayout />}>
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/water" element={<Water />} />
-                  <Route path="/ambient-air" element={<Airambient />} />
+                  <Route path="/ambient" element={<Airambient />} />
                   <Route path="/noise" element={<Noise />} />
                   <Route path="/account" element={<Account />} />
                  

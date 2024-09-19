@@ -4,10 +4,12 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../../utils/apiConfig';
 import { useDispatch, useSelector } from 'react-redux';
+import { useOutletContext } from 'react-router-dom';
 
 const CalibrationExceeded = () => {
   // Get userId from Redux (selectedUser)
   const { userId } = useSelector((state) => state.selectedUser); 
+  const { searchTerm } = useOutletContext() || {};
 
   const [userType, setUserType] = useState('');
   const [entries, setEntries] = useState([]);
@@ -15,7 +17,8 @@ const CalibrationExceeded = () => {
   const [currentComment, setCurrentComment] = useState('');
   const [isEditingAdminComment, setIsEditingAdminComment] = useState(false);
   const [currentUserName, setCurrentUserName] = useState("KSPCB001");
-  
+  const selectedUserIdFromRedux = useSelector((state) => state.selectedUser.userId);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -62,7 +65,20 @@ const CalibrationExceeded = () => {
       navigate('/');
     }
   };
+  useEffect(() => {
+    // Check sessionStorage for stored selectedUserId
+    const storedUserId = sessionStorage.getItem('selectedUserId');
 
+    // Fetch data if storedUserId is present, otherwise use current state or searchTerm
+    const userName = searchTerm || storedUserId || selectedUserIdFromRedux || currentUserName;
+    
+    // Trigger data fetch with the correct userName
+    fetchData(userName);
+
+    if (storedUserId) {
+      setCurrentUserName(storedUserId);  // Set to the retrieved userId
+    }
+  }, [selectedUserIdFromRedux, searchTerm, currentUserName, dispatch]);
   // Fetch data when the component mounts and when userId or currentUserName changes
   useEffect(() => {
     if (userId) {

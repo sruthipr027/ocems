@@ -27,7 +27,7 @@ ChartJS.register(
     Legend
 );
 
-const WaterGraphPopup = ({ isOpen, onRequestClose, parameter, userName }) => {
+const AirGraphPopup = ({ isOpen, onRequestClose, parameter, userName }) => {
     const [timeInterval, setTimeInterval] = useState('hour');
     const [dataByInterval, setDataByInterval] = useState({});
     const [loadingByInterval, setLoadingByInterval] = useState({});
@@ -122,9 +122,6 @@ const WaterGraphPopup = ({ isOpen, onRequestClose, parameter, userName }) => {
     };
 
     const customStyles = {
-        overlay: {
-            backgroundColor: 'rgba(0, 0, 0, 0.75)' // Ensuring the background dims properly
-        },
         content: {
             top: '50%',
             left: '50%',
@@ -171,4 +168,4 @@ const WaterGraphPopup = ({ isOpen, onRequestClose, parameter, userName }) => {
     );
 };
 
-export default WaterGraphPopup;
+export default AirGraphPopup;

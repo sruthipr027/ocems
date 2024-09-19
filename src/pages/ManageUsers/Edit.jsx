@@ -8,6 +8,7 @@ import axios from 'axios';
 import { API_URL } from '../../utils/apiConfig'; 
 import DashboardSam from '../Dashboard/DashboardSam';
 import Maindashboard from '../Maindashboard/Maindashboard';
+import HeaderSim from '../Header/HeaderSim';
 
 function Edit() {
   const { userId } = useParams();  // Get the userId from the route parameters
@@ -128,7 +129,7 @@ function Edit() {
         <div className="col-lg-9 col-12">
           <div className="row">
             <div className="col-12">
-              <Maindashboard />
+              <HeaderSim />
             </div>
           </div>
 

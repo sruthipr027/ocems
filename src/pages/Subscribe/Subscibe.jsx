@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
 import DashboardSam from '../Dashboard/DashboardSam';
 import Hedaer from '../Header/Hedaer';
+import HeaderSim from '../Header/HeaderSim';
 
 Modal.setAppElement('#root'); // Bind modal to your appElement for accessibility
 
@@ -128,7 +129,7 @@ const Subscibe = () => {
         <div className="col-lg-9 col-12">
           <div className="row">
             <div className="col-12">
-              <Hedaer />
+              <HeaderSim />
             </div>
           </div>
 

@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DashboardSam from '../Dashboard/DashboardSam'; // Assuming you're importing the Sidebar component
 import Hedaer from '../Header/Hedaer'; // Assuming you're importing the Header component
+import HeaderSim from '../Header/HeaderSim';
 
 const EditReport = () => {
   const { userName } = useParams();
@@ -53,7 +54,7 @@ const EditReport = () => {
       <div className="row">
         {/* Sidebar */}
         <div className="col-lg-3 d-none d-lg-block">
-          <DashboardSam />
+         <DashboardSam/>
         </div>
 
         {/* Main Content */}
@@ -61,7 +62,7 @@ const EditReport = () => {
           {/* Header */}
           <div className="row">
             <div className="col-12">
-              <Hedaer />
+             <HeaderSim/>
             </div>
           </div>
 

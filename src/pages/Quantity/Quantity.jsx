@@ -15,50 +15,51 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useOutletContext } from 'react-router-dom';
 import Layout from '../Layout/Layout';
+import Hedaer from "../Header/Hedaer";
+import DashboardSam from "../Dashboard/DashboardSam";
 
 const Quantity = () => {
   const dispatch = useDispatch();
-  const { userData, userType } = useSelector((state) => state.user);
   const { averageData, differenceData, loading, error } = useSelector((state) => state.iotData);
   const [searchResult, setSearchResult] = useState(null);
   const [searchError, setSearchError] = useState("");
   const [interval, setInterval] = useState("year");
+
+  // Get searchTerm (selected user) from the Outlet context
   const { searchTerm } = useOutletContext();
 
-  useEffect(() => {
-    const fetchData = async (userName) => {
-      try {
-        await dispatch(fetchAverageDataByUserName({ userName, interval })).unwrap();
-      } catch (error) {
-        toast.error(`Average Data for ${interval} is not found`);
-      }
-
-      try {
-        await dispatch(fetchDifferenceDataByUserName(userName)).unwrap();
-        setSearchResult(userName);
-        setSearchError("");
-      } catch (error) {
-        toast.error("Difference data is not found");
-        setSearchResult(null);
-        setSearchError("No result found for this userID");
-      }
-    };
-
-    if (searchTerm) {
-      fetchData(searchTerm);
-    } else if (userData && userType === 'user') {
-      fetchData(userData.validUserOne.userName);
+  // Fetch data based on searchTerm (userName) and interval
+  const fetchData = async (userName) => {
+    try {
+      await dispatch(fetchAverageDataByUserName({ userName, interval })).unwrap();
+    } catch (error) {
+      toast.error(`Average Data for ${interval} is not found`);
     }
-  }, [searchTerm, userData, userType, interval, dispatch]);
 
+    try {
+      await dispatch(fetchDifferenceDataByUserName(userName)).unwrap();
+      setSearchResult(userName);
+      setSearchError("");
+    } catch (error) {
+      toast.error("Difference data is not found");
+      setSearchResult(null);
+      setSearchError("No result found for this userID");
+    }
+  };
+
+  // Effect to fetch data when searchTerm changes
+  useEffect(() => {
+    if (searchTerm) {
+      fetchData(searchTerm);  // Fetch data for the selected user
+      console.log(`Fetching data for: ${searchTerm}`);
+    }
+  }, [searchTerm, interval, dispatch]);
+
+  // Handle interval changes
   const handleIntervalChange = (newInterval) => {
     setInterval(newInterval);
     if (searchResult) {
       dispatch(fetchAverageDataByUserName({ userName: searchResult, interval: newInterval }))
-        .unwrap()
-        .catch(() => toast.error(`Average Data for ${newInterval} is not found`));
-    } else if (userData && userType === 'user') {
-      dispatch(fetchAverageDataByUserName({ userName: userData.validUserOne.userName, interval: newInterval }))
         .unwrap()
         .catch(() => toast.error(`Average Data for ${newInterval} is not found`));
     }
@@ -97,11 +98,13 @@ const Quantity = () => {
     <div>
       <div className="container-fluid">
         <div className="row" style={{ backgroundColor: 'white' }}>
-          {/* Sidebar (hidden on mobile) */}
-          <div className="col-lg-12 col-12 ">
+        <div className="col-lg-3 d-none d-lg-block ">
+                    <DashboardSam />
+                </div>
+          <div className="col-lg-9 col-12 ">
             <div className="row">
               <div className="col-12">
-                <Layout/>
+                <Hedaer/>
               </div>
             </div>
           </div>
@@ -111,7 +114,6 @@ const Quantity = () => {
       <div className="container-fluid">
         <div className="row">
         <div className="col-lg-3 d-none d-lg-block">
-         
          </div>
           <div className="col-lg-9 col-12">
             <div className="row">
