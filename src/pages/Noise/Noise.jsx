@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchIotDataByUserName } from "../../redux/features/iotData/iotDataSlice";
 import NoiseGraphPopup from './NoiseGraphPopup';
 import CalibrationPopup from '../Calibration/CalibrationPopup';
-import CalibrationExceeded from "../CalibartionPage/CalibrationExceeded";
+import CalibrationExceeded from '../Calibration/CalibrationExceeded';
 import { useOutletContext } from 'react-router-dom';
 import { Oval } from 'react-loader-spinner';
 import DashboardSam from '../Dashboard/DashboardSam';
 import Hedaer from '../Header/Hedaer';
+import Maindashboard from '../Maindashboard/Maindashboard';
 
 const Noise = () => {
   const outletContext = useOutletContext() || {};
@@ -26,40 +27,36 @@ const Noise = () => {
   const [companyName, setCompanyName] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const fetchUserData = async (userName) => {
+    setLoading(true);
+    try {
+      const result = await dispatch(fetchIotDataByUserName(userName)).unwrap();
+      setSearchResult(result);
+      setCompanyName(result?.companyName || "Unknown Company");
+      setSearchError("");
+      setCurrentUserName(userName); 
+    } catch (err) {
+      setSearchResult(null);
+      setCompanyName("Unknown Company");
+      setSearchError(err.message || 'No result found for this userID');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async (userName) => {
-      setLoading(true);
-      try {
-        const result = await dispatch(fetchIotDataByUserName(userName)).unwrap();
-        setSearchResult(result);
-        setCompanyName(result?.companyName || "Unknown Company");
-        setSearchError("");
-      } catch (err) {
-        setSearchResult(null);
-        setCompanyName("Unknown Company");
-        setSearchError(err.message || 'No result found for this userID');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    // Check sessionStorage for stored selectedUserId
     const storedUserId = sessionStorage.getItem('selectedUserId');
-
-    // Fetch data if storedUserId is present, otherwise use current state or searchTerm
     const userName = searchTerm || storedUserId || selectedUserIdFromRedux || currentUserName;
-
-    // Trigger data fetch with the correct userName
-    fetchData(userName);
+    fetchUserData(userName);
 
     if (storedUserId) {
-      setCurrentUserName(storedUserId);  // Set to the retrieved userId
+      setCurrentUserName(storedUserId); 
     }
   }, [selectedUserIdFromRedux, searchTerm, currentUserName, dispatch]);
 
   const handleCardClick = (card) => {
-    setSelectedCard(card);  // Set the clicked card data
-    setShowPopup(true);  // Open the popup
+    setSelectedCard(card);  
+    setShowPopup(true);  
   };
 
   const handleClosePopup = () => {
@@ -79,7 +76,7 @@ const Noise = () => {
     const userIdNumber = parseInt(currentUserName.replace(/[^\d]/g, ''), 10);
     if (!isNaN(userIdNumber)) {
       const newUserId = `KSPCB${String(userIdNumber + 1).padStart(3, '0')}`;
-      fetchUserData(newUserId);  // Fetch data for the next user
+      fetchUserData(newUserId);
     }
   };
 
@@ -87,24 +84,7 @@ const Noise = () => {
     const userIdNumber = parseInt(currentUserName.replace(/[^\d]/g, ''), 10);
     if (!isNaN(userIdNumber) && userIdNumber > 1) {
       const newUserId = `KSPCB${String(userIdNumber - 1).padStart(3, '0')}`;
-      fetchUserData(newUserId);  // Fetch data for the previous user
-    }
-  };
-
-  const fetchUserData = async (userId) => {
-    setLoading(true);
-    try {
-      const result = await dispatch(fetchIotDataByUserName(userId)).unwrap();
-      setSearchResult(result);
-      setCompanyName(result?.companyName || "Unknown Company");
-      setSearchError("");
-      setCurrentUserName(userId);  // Update current user name
-    } catch (error) {
-      setSearchResult(null);
-      setCompanyName("Unknown Company");
-      setSearchError('No Result found for this userID');
-    } finally {
-      setLoading(false);
+      fetchUserData(newUserId);
     }
   };
 
@@ -112,18 +92,18 @@ const Noise = () => {
     <div className="container-fluid">
       <div className="row">
         <div className="col-lg-3 d-none d-lg-block">
-          {/* Optional Sidebar */} <DashboardSam />
+          <DashboardSam />
         </div>
         <div className="col-lg-9 col-12">
-        <div className=" ">
-        <div className="row">
-          <div className="col-12">
-          <Hedaer />
+          <div className="row">
+            <div className="col-12">
+              <Hedaer />
+            </div>
           </div>
+        <div className='maindashboard'>
+        <Maindashboard/>
         </div>
 
-    
-      </div>
           <div className="d-flex justify-content-between prevnext mt-5 ps-5 pe-5">
             <div>
               <button className='btn btn-outline-dark' onClick={handlePrevUser} disabled={loading}>
@@ -149,15 +129,14 @@ const Noise = () => {
               <h5>Data Interval: <span className="span-class">{userData.validUserOne.dataInteval}</span></h5>
             )}
             {userData?.validUserOne && userData.validUserOne.userType === 'user' && (
-              <button type="button" onClick={handleOpenCalibrationPopup} className="btn  mb-2 mt-2" style={{backgroundColor:'236a80' , border:'none'}}>
+              <button type="button" onClick={handleOpenCalibrationPopup} className="btn mb-2 mt-2" style={{backgroundColor: '#236a80', border: 'none'}}>
                 Calibration
               </button>
             )}
-           
-           
           </div>
-         <div className='d-flex justify-content-end'>
-         {latestData && (
+
+          <div className='d-flex justify-content-end'>
+            {latestData && (
               <>
                 <h5>Analyser Health:</h5>
                 {searchResult?.validationStatus ? (
@@ -167,7 +146,7 @@ const Noise = () => {
                 )}
               </>
             )}
-         </div>
+          </div>
 
           {searchError && (
             <div className="card mb-4">
@@ -225,15 +204,12 @@ const Noise = () => {
 
       <footer className="footer">
         <div className="container-fluid clearfix">
-          <span className="text-muted d-block text-center text-sm-left d-sm-inline-block">
-            {/* Ebhoom Control and Monitor System */}
-          </span>
-          <span className="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
-            ©{" "}
-            <a href="" target="_blank">
-              Ebhoom Solutions LLP
-            </a>{" "}
-            2023
+          <span className="d-block text-center text-sm-left d-sm-inline-block">
+            Copyright ©2023{" "}
+            <a href="https://knndigital.com/" target="_blank" rel="noopener noreferrer">
+              EnviRobotics
+            </a>
+            . All rights reserved
           </span>
         </div>
       </footer>

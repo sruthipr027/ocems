@@ -7,6 +7,8 @@ import 'react-toastify/dist/ReactToastify.css'; // Toastify styles
 import { fetchAllCalibrationExceedValues, deleteCalibrationExceedValue } from '../../redux/features/calibrationExceedValues/calibrationExceedValueSlice';
 import DashboardSam from '../Dashboard/DashboardSam';
 import HeaderSim from '../Header/HeaderSim';
+import Maindashboard from '../Maindashboard/Maindashboard';
+import Hedaer from '../Header/Hedaer';
 
 function ViewParameter() {
     const navigate = useNavigate();
@@ -96,19 +98,18 @@ function ViewParameter() {
 
     return (
         <div className="container-fluid">
-            <div className="row">
-                {/* Sidebar (hidden on mobile) */}
-                <div className="col-lg-3 d-none d-lg-block">
-                    <DashboardSam />
-                </div>
-                {/* Main content */}
-                <div className="col-lg-9 col-12">
-                    <div className="row">
-                        <div className="col-12">
-                            <HeaderSim />
-                        </div>
-                    </div>
-                    <div>
+        <div className="row">
+          {/* Sidebar */}
+          <div className="col-lg-3 d-none d-lg-block">
+            <DashboardSam />
+          </div>
+          {/* Main content */}
+          <div className="col-lg-9 col-12">
+            <Hedaer />
+         <div className='maindashboard'>
+         <Maindashboard/>
+         </div>
+         <div>
                         {/* Add Parameter Button */}
                         <div className="align-items-center justify-content-center d-flex mt-5 mb-4">
                             <Button onClick={handleParameter} className="p-3 btn parameterbtn align-items-center justify-content-center d-flex" style={{ border: 'none' }}>
@@ -237,9 +238,13 @@ function ViewParameter() {
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+
+  
+  
+            
+          </div>
         </div>
+      </div>
     );
 }
 

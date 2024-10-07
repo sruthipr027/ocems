@@ -14,6 +14,7 @@ import axios from 'axios';
 import './header.css';
 import { API_URL } from '../../utils/apiConfig';
 import { useOutletContext } from 'react-router-dom';
+import { useRef } from 'react';
 
 function Hedaer() {
   const dispatch = useDispatch();
@@ -24,6 +25,19 @@ function Hedaer() {
   const [userName, setUserName] = useState(""); // State for the selected user name
   const [users, setUsers] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const [dropdownAlignment, setDropdownAlignment] = useState('end');
+
+  const handleDropdownClick = () => {
+    const dropdownRect = dropdownRef.current.getBoundingClientRect();
+    const spaceOnRight = window.innerWidth - dropdownRect.right;
+    const neededSpace = 300; // Approx width of your dropdown menu
+    if (spaceOnRight < neededSpace) {
+      setDropdownAlignment('start');
+    } else {
+      setDropdownAlignment('end');
+    }
+  };
 
   const selectedUserId = useSelector((state) => state.selectedUser.userId);
   const navigate = useNavigate();
@@ -105,7 +119,7 @@ function Hedaer() {
 
   return (
     <div className="ms-0">
-      <div className="mt-4 col-lg-12">
+      <div className="mt-4 col-lg-12 ">
         <Navbar expand="lg" className="mb-4 header-navbar ">
           <div className="w-100 px-2 d-flex align-items-center justify-content-between">
             <Navbar.Brand href="#home" className="brand-text">
@@ -137,7 +151,7 @@ function Hedaer() {
                   <Dropdown.Toggle as={Nav.Link} bsPrefix="p-0" id="user-dropdown">
                     <i className="fa-solid fa-user"></i>
                   </Dropdown.Toggle>
-                  <Dropdown.Menu align="end">
+                  <Dropdown.Menu align={dropdownAlignment}>
                     <Dropdown.Item><img src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_640.png" width={'100px'} alt="User Icon"></img></Dropdown.Item>
                     <Dropdown.Item>{userData?.validUserOne?.userName || 'Admin-Developer'}</Dropdown.Item>
                     <Dropdown.Item onClick={handleSignOut}>Sign Out</Dropdown.Item>
@@ -151,13 +165,13 @@ function Hedaer() {
 
         {userData?.validUserOne?.userType !== 'user' && (
           <div className="ms-0 mb-3">
-            <div className="mt-4 col-lg-12">
+            <div className=" col-lg-12 drop" style={{marginTop:'10%' , background:'none'}}>
               <Dropdown show={isDropdownOpen} onToggle={toggleDropdown}>
                 <Dropdown.Toggle id="dropdown-basic" style={{backgroundColor:'#236a80' , outline:'none' , border:'none'}}>
                   {userName ? `Selected: ${userName}` : 'Select User'}
                 </Dropdown.Toggle>
 
-                <Dropdown.Menu style={{ maxHeight: '200px', overflowY: 'scroll' }}>
+                <Dropdown.Menu style={{ maxHeight: '200px' }}>
                   <input
                     type="text"
                     placeholder="Search user..."

@@ -75,12 +75,12 @@ const Dashboard = () => {
          
          
          
-          <div className="row" style={{overflowX:'hidden'}}>
+          <div className="row"/*  style={{overflowX:'hidden'}} */>
         
            
         </div>
 
-        <div className="row" style={{overflowX:'hidden'}}>
+        <div className="row" /* style={{overflowX:'hidden'}} */>
          
 
            

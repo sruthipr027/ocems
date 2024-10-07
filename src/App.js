@@ -47,6 +47,10 @@ import PrivateLayout from './pages/PrivateLayout/PrivateLayout';
 import Hedaer from './pages/Header/Hedaer';
 import Layout from './pages/Layout/Layout';
 import Transcation from './pages/Transactions/Transcation';
+import LoginNew from './pages/Login/LoginNew';
+import Mainsam from './pages/Maindashboard/Mainsam';
+import Chat from './pages/Chat/Chat';
+import LIveLayout from './pages/LiveMapping/LIveLayout';
 
 function App() {
   const dispatch = useDispatch();
@@ -83,11 +87,12 @@ function App() {
          
             <Routes>
              
-                <Route path="/" element={<Log />} />
+                <Route path="/login" element={<Log />} />
                 <Route path="/reset-password" element={<Reset />} />
                 <Route path="/reset" element={<ResetEmail />} />
                 <Route path='/download-data' element={<Download/>}></Route>
-             
+                <Route path="/" element={<LoginNew />} />
+
 
               {/* Admin Routes */}
              
@@ -130,6 +135,11 @@ function App() {
                   <Route path="/edit/:userId" element={<Edit />} />
                   <Route path="/view-notification" element={<Viewnotification />} />
                   <Route path="/edit-parameter/:userName" element={<EditParameter />} />
+                  <Route path="/sample" element={<Mainsam />} />
+                  <Route path="/live-station" element={<LIveLayout />} />
+                  <Route path="/chat" element={<Chat />} />
+
+
                 </Route>
               )}
 
@@ -151,6 +161,7 @@ function App() {
                   <Route path="/support-analyser" element={<SupportAnalyser />} />
                   <Route path="/view-report/:userName" element={<ViewReportUser />} />
 
+                  <Route path="/live-station" element={<LIveLayout />} />
 
 
                 </Route>

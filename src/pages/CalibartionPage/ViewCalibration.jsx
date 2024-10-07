@@ -8,6 +8,7 @@ import Layout from '../Layout/Layout';
 import { fetchIotDataByUserName } from '../../redux/features/iotData/iotDataSlice';
 import DashboardSam from '../Dashboard/DashboardSam';
 import Hedaer from '../Header/Hedaer';
+import Maindashboard from '../Maindashboard/Maindashboard';
 
 function ViewCalibration() {
   const dispatch = useDispatch();
@@ -108,36 +109,19 @@ function ViewCalibration() {
   }
 
   return (
-    <div>
-      <div className="container-fluid">
-        <div className="row" style={{ backgroundColor: 'white' }}>
-          {/* Sidebar (hidden on mobile) */}
-          <div className="col-lg-3 d-none d-lg-block ">
-                    <DashboardSam />
-                </div>
-          {/* Main content */}
-          <div className="col-lg-9 col-12 ">
-            <div className="row">
-              <div className="col-12">
-             <Hedaer/>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className="container-fluid">
+    <div className="row">
+      {/* Sidebar */}
+      <div className="col-lg-3 d-none d-lg-block">
+        <DashboardSam />
       </div>
-
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-lg-3 d-none d-lg-block">
-          </div>
-
-          <div className="col-lg-9 col-12">
-            <div className="row">
-              <div className="col-12">
-              </div>
-            </div>
-
-            <div className="container-fluid water">
+      {/* Main content */}
+      <div className="col-lg-9 col-12">
+        <Hedaer />
+     <div className='maindashboard'>
+     <Maindashboard/>
+     </div>
+     <div className="container-fluid water">
               <div className="row">
                 <div className="col-12 col-md-12 grid-margin">
                   <div className="col-12 d-flex justify-content-between align-items-center m-3">
@@ -216,10 +200,11 @@ function ViewCalibration() {
                 </div>
               </footer>
             </div>
-          </div>
-        </div>
+
+      
       </div>
     </div>
+  </div>
   );
 }
 

@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import DashboardSam from '../Dashboard/DashboardSam';
 import Hedaer from '../Header/Hedaer';
-
+import Maindashboard from '../Maindashboard/Maindashboard';
+import './calibration.css'
 const Calibration = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -80,16 +81,17 @@ const Calibration = () => {
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-lg-3 d-none d-lg-block ">
+        {/* Sidebar */}
+        <div className="col-lg-3 d-none d-lg-block">
           <DashboardSam />
         </div>
+        {/* Main content */}
         <div className="col-lg-9 col-12">
-          <div className="row">
-            <div className="col-12">
-              <Hedaer />
-            </div>
-          </div>
-          <div className="row" style={{ overflowX: 'hidden' }}>
+          <Hedaer />
+       <div className='maindashboard'>
+       <Maindashboard/>
+       </div>
+       <div className="row" >
             <div className="col-12 col-md-12 grid-margin">
               <h1 className="text-center mt-5">Calibration Added By</h1>
               <div className="card m-1">
@@ -300,6 +302,8 @@ const Calibration = () => {
               </div>
             </div>
           </div>
+
+          
         </div>
       </div>
     </div>

@@ -8,6 +8,8 @@ import FooterM from '../FooterMain/FooterM';
 import DashboardSam from '../Dashboard/DashboardSam';
 import './Parameter.css'; 
 import HeaderSim from '../Header/HeaderSim';
+import Hedaer from '../Header/Hedaer';
+import Maindashboard from '../Maindashboard/Maindashboard';
 
 function AddParameters() {
   const dispatch = useDispatch();
@@ -99,7 +101,10 @@ if (error) {
         </div>
         {/* Main content */}
         <div className="col-lg-9 col-12">
-          <HeaderSim />
+          <Hedaer />
+       <div className='maindashboard'>
+       <Maindashboard/>
+       </div>
           <div className="row" style={{ overflowX: 'hidden' }}>
             <div className="col-12 col-md-12 grid-margin">
               <div className="col-12 d-flex justify-content-between align-items-center m-3">

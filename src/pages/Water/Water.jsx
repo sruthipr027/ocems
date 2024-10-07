@@ -140,9 +140,11 @@ const Water = () => {
                 </div>
    
       <div className="col-lg-9 col-12 ">
-        <div className="row">
-          <div className="col-12">
-          <Hedaer />
+        <div className="row1 ">
+          <div className="col-12  " >
+          <div className="headermain">
+    <Hedaer />
+  </div>
           </div>
         </div>
 
@@ -166,7 +168,10 @@ const Water = () => {
               
             </div>
           </div>
+          <div className="maindashboard" >
           <Maindashboard/>
+          </div>
+        
         
  <div className="container-fluid water">
       <div className="row">
@@ -225,7 +230,7 @@ const Water = () => {
             </div>
           )}
 
-          <div className="row" style={{ overflowX: 'hidden' }}>
+          <div className="row" >
             <div className="col-12 col-md-12 grid-margin">
               <div className="col-12 d-flex justify-content-between align-items-center m-3"></div>
               <div className="col-lg-9 col-12 airambient-section w-100">
@@ -233,25 +238,35 @@ const Water = () => {
                   <h3 className="text-center">{companyName}</h3>
                   
                   <div className="row">
-                    {waterParameters.map((item, index) => (
-                      <div className="col-md-4 col-12 grid-margin" key={index}>
-                        <div className="card m-3" onClick={() => handleCardClick(item)}>
-                          <div className="card-body">
-                            <h3 className="mb-3">{item.parameter}</h3>
-                            <h6>
-                              <strong className="strong-value">
-                                {searchResult ? searchResult[item.name] || 'N/A' : 'No Result found for this userID'}
-                              </strong>
-                              {item.value}
-                            </h6>
-                            <div className="image-container">
-                              <img src={waterDrop} alt="Water Drop" className="img-fluid custom-img" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+  {waterParameters.some(item => searchResult && searchResult[item.name]) ? (
+    // If there are valid parameters, display the cards
+    waterParameters
+      .filter(item => searchResult && searchResult[item.name]) // Filter parameters with valid data
+      .map((item, index) => (
+        <div className="col-md-4 col-12 grid-margin" key={index}>
+          <div className="card m-3" onClick={() => handleCardClick(item)}>
+            <div className="card-body">
+              <h3 className="mb-3">{item.parameter}</h3>
+              <h6>
+                <strong className="strong-value">
+                  {searchResult[item.name] || 'N/A'}
+                </strong>
+                {item.value}
+              </h6>
+              <div className="image-container">
+                <img src={waterDrop} alt="Water Drop" className="img-fluid custom-img" />
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+  ) : (
+    // If no valid parameters, show 'No Data Found' message
+    <h1 className="text-center mt-5">No Data Found</h1>
+  )}
+</div>
+
+
 
                 
                   {showPopup && selectedCard && (

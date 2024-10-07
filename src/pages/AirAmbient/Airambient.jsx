@@ -10,6 +10,8 @@ import Hedaer from "../Header/Hedaer";
 import { useOutletContext } from 'react-router-dom';
 import './Airgraph.css'; // Reusing the water.css for similar design
 import waterDrop from '../../assests/images/windimage.png'
+import Mainsam from "../Maindashboard/Mainsam";
+import Maindashboard from "../Maindashboard/Maindashboard";
 function Airambient() {
   const dispatch = useDispatch();
   const { searchTerm } = useOutletContext() || {};
@@ -121,8 +123,12 @@ function Airambient() {
           <div className="row">
             <div className="col-12">
               <Hedaer />
+             
             </div>
           </div>
+         <div className="maindashboard">
+         <Maindashboard/>
+         </div>
 
           <div className="d-flex justify-content-between prevnext mt-5 ps-5 pe-5">
             <div>
@@ -198,36 +204,36 @@ function Airambient() {
               </div>
             </div>
           )}
-
-          <div className="row" style={{ overflowX: 'hidden' }}>
-            <div className="col-12 col-md-12 grid-margin">
-              <div className="col-12 d-flex justify-content-between align-items-center m-3"></div>
-              <div className="col-lg-9 col-12 airambient-section w-100">
-                <div className="content-wrapper shadow p-5">
-                  <h3 className="text-center">{companyName}</h3>
-
-                  <div className="row">
-                    {airParameters.map((item, index) => (
-                      <div className="col-md-4 col-12 grid-margin" key={index}>
-                        <div className="card m-3" onClick={() => handleCardClick({ title: item.parameter })}>
-                          <div className="card-body">
-                            <h3 className="mb-3">{item.parameter}</h3>
-                            <h6>
-                              <strong className="strong-value">
-                                {searchResult ? searchResult[item.name] || 'N/A' : 'No Result found for this userID'}
-                              </strong>
-                              {item.value}
-                            </h6>
-                            <div className="image-container">
-                              <img src={waterDrop} alt="Air Parameter Icon" className="img-fluid custom-img" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {showPopup && selectedCard && (
+<h3 className="text-center">{companyName}</h3>
+<div className="row">
+  {airParameters.some(item => searchResult && searchResult[item.name]) ? (
+    // If there are valid parameters, display the cards
+    airParameters
+      .filter(item => searchResult && searchResult[item.name]) // Filter parameters with valid data
+      .map((item, index) => (
+        <div className="col-md-4 col-12 grid-margin" key={index}>
+          <div className="card m-3" onClick={() => handleCardClick(item)}>
+            <div className="card-body">
+              <h3 className="mb-3">{item.parameter}</h3>
+              <h6>
+                <strong className="strong-value">
+                  {searchResult[item.name] || 'N/A'}
+                </strong>
+                {item.value}
+              </h6>
+              <div className="image-container">
+                <img src={waterDrop} alt="Water Drop" className="img-fluid custom-img" />
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+  ) : (
+    // If no valid parameters, show 'No Data Found' message
+    <h1 className="text-center mt-5">No Data Found</h1>
+  )}
+</div>
+{showPopup && selectedCard && (
                     <AirGraphPopup
                       isOpen={showPopup}
                       onRequestClose={handleClosePopup}
@@ -243,10 +249,8 @@ function Airambient() {
                     />
                   )}
                   <CalibrationExceeded />
-                </div>
-              </div>
-            </div>
-          </div>
+
+
         </div>
       </div>
 

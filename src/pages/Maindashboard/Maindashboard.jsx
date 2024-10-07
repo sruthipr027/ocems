@@ -32,36 +32,14 @@ function Maindashboard() {
 
   return (
   <div>
-      <div className='maindashboard d-flex mt-3'>
-      <div className='flex-grow-1 content'>
+     <div className="col-lg-12 col-12">
+     <div className='maindashboard d-flex'>
+      <div className='flex-grow-1 content' style={{backgroundColor:'white'}}>
         
-        <div style={{ position: 'relative', marginBottom: '1rem' }} className='w-75 px-1 homeSearch2'>
-          <input 
-            type="text" 
-            placeholder="Search..." 
-            className="p-3 mb-4 shadow" 
-            style={{ 
-              borderRadius: '10px', 
-              border: 'none', 
-              // paddingRight: '40px' ,
-              // marginInline:'10px',
-              width:'100%'
-            }} 
-          />
-          <i 
-            className="fa fa-search" 
-            style={{ 
-              position: 'absolute', 
-              top: '35%', 
-              right: '30px', 
-              transform: 'translateY(-50%)', 
-              color: '#aaa' 
-            }} 
-          ></i>
-        </div>
+      
         
-        <div className='me-1 mt-5'>
-          <Navbar expand="lg" className="navbg p-3 shadow" style={{ borderRadius: '10px'}}>
+        <div className='me-1 '>
+          <Navbar expand="lg" className="navbg p-3 shadow" style={{ borderRadius: '10px' , backgroundColor:'white'}}>
             <div className='d-flex justify-content-between gap-2 w-100'>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav" >
@@ -184,6 +162,8 @@ function Maindashboard() {
      
       </div>
     </div>
+     </div>
+      
   </div>
   );
 }

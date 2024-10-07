@@ -144,6 +144,7 @@ const AirGraphPopup = ({ isOpen, onRequestClose, parameter, userName }) => {
             onRequestClose={onRequestClose}
             contentLabel="Data Popup"
             style={customStyles}
+            
         >
             <h4>{parameter}</h4>
            

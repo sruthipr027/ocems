@@ -9,6 +9,7 @@ import DashboardSam from '../Dashboard/DashboardSam';
 import Hedaer from '../Header/Hedaer';
 import FooterM from '../FooterMain/FooterM';
 import Layout from "../Layout/Layout";
+import Maindashboard from "../Maindashboard/Maindashboard";
 
 const Report = () => {
   const [dateFrom, setDateFrom] = useState("");
@@ -97,38 +98,26 @@ const Report = () => {
   };
 
   return (
-    <div>
     <div className="container-fluid">
-    <div className="row" style={{ backgroundColor: 'white' }}>
-      {/* Sidebar (hidden on mobile) */}
-      <div className="col-lg-3 d-none d-lg-block ">
-                    <DashboardSam />
-                </div>
-    
-      {/* Main content */}
-      <div className="col-lg-9 col-12 ">
-        <div className="row">
-          <div className="col-12">
-          <Hedaer/>
-          </div>
-        </div>
-
-    
+    <div className="row">
+      {/* Sidebar */}
+      <div className="col-lg-3 d-none d-lg-block">
+        <DashboardSam />
       </div>
-      
-
-    </div>
-  </div>
-
-    
-    <div className="container-fluid">
+      {/* Main content */}
+      <div className="col-lg-9 col-12">
+        <Hedaer />
+     <div className='maindashboard'>
+     <Maindashboard/>
+     </div>
+     <div className="container-fluid">
       <div className="row">
        
         <div className="col-lg-3 d-none d-lg-block">
          
         </div>
      
-        <div className="col-lg-9 col-12">
+        <div className="col-lg-12 col-12">
          
           <div className="row">
             <div className="col-12 col-md-12 grid-margin">
@@ -251,7 +240,12 @@ const Report = () => {
         </div>
       </div>
     </div>
+
+
+        
+      </div>
     </div>
+  </div>
   );
 };
 

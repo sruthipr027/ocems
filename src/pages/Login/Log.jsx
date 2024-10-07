@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Modal from "react-modal";
 import "react-toastify/dist/ReactToastify.css";
 import { loginUser } from "../../redux/features/auth/authSlice";
+import loginbanner from '../../assests/images/logimage.png'
 
 function Log() {
   const navigate = useNavigate();
@@ -97,8 +98,11 @@ function Log() {
   };
 
   return (
-    <div className='login-page'>
-      <div className='bg-light back rounded  shadow w-100' style={{ maxWidth: '500px', padding: '20px' }}>
+    <div className='login-page d-flex justify-content-center '>
+      {/*  <div className='bg-light back rounded  shadow ' style={{ maxWidth: '250px', padding: '20px' }}>
+        <img src={loginbanner} alt=""  width={'200px'} height={'100vh'}/>
+       </div> */}
+      <div className='bg-light  rounded  shadow w-100' style={{ maxWidth: '500px', padding: '20px' }}>
         <div className="d-flex align-items-center justify-content-between w-100 flex-nowrap" style={{ paddingTop: "10px" }}>
           <img className='ms-2' src={logo} alt="Logo" style={{ height: '30px', width: 'auto' }} />
           <div className='me-2'>
@@ -157,6 +161,7 @@ function Log() {
           </div>
         </div>
       </div>
+     
       <ToastContainer />
     </div>
   );

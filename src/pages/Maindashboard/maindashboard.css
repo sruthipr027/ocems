@@ -41,17 +41,17 @@
 
 @media (max-width: 1500px){
   .buttonbg{
-    width: 250px;
+    width: 240px;
   }
 }
 @media (max-width: 1200px){
   .buttonbg{
-    width: 200px;
+    width: 220px;
   }
 }
 @media (max-width: 1000px){
   .buttonbg{
-    width: 220px;
+    width: 200px;
   }
 }
 @media (max-width: 450px){
@@ -67,8 +67,8 @@
 
 /* Main Dashboard Layout */
 .maindashboard {
-  display: flex;
- /*  overflow-x: hidden; */
+  /* display: flex; */
+   overflow-x: hidden;
 }
 
 .sidebar {

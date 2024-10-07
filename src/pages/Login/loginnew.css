@@ -1,45 +1,42 @@
-.svg-container {
-    display: flex;
-    align-items: end;
-    justify-content: end;
-    width: 100%;
-    overflow: hidden;
-    height: 80vh;
-    padding-left: 0;
+.back{
+  background-image: url('https://img.freepik.com/free-vector/blue-curve-background_361591-1369.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow-y: hidden;
+}
+
+/* Adjustments for all screens */
+.columnFirst {
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margin */
+}
+
+/* Mobile view specific styles */
+@media (max-width: 768px) {
+  .firstColumn {
+    display: none; /* Hide the first column */
   }
-  
-  svg {
-    /* margin-left: -50%; */
-    transform: rotate(90deg) scale(5) /*  translateY(42%) */;
-    height: 100%;
-  
+
+  .loginColumn, .columnFirst {
+    flex: 0 0 100%; /* Take full width */
+    max-width: 100%; /* Ensure it does not exceed the screen width */
+    margin: 0; /* Remove margin */
+    padding: 0; /* Remove padding */
   }
-  
-  .login-container{
-    
-    background-size: cover;
-    background-position: center;
+
+  .loginColumn .bg-light {
+    border-radius: 0; /* Optional: remove border radius for full width usage */
+    box-shadow: none; /* Optional: remove shadow for a cleaner look */
   }
-  
-  .banner .wave {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    height: 100vh; 
+
+  .loginColumn form {
+    padding: 15px; /* Slight padding inside the form, adjust as needed */
   }
-  .login-head{
-    font-size: 40px;
-    font-weight: 700;
+}
+@media (max-width: 480px) {
+  .loginColumn {
+
+   
+    padding: 0px;
   }
-  .input-box{
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    border: 0;
-    background-color: rgba(173, 231, 246, 0.318);
-    outline-color: rgb(0, 110, 255);
-  }
-  .reset-btn{
-  
-    background-color: rgba(182, 224, 226, 0.282);
-  }
+}
